@@ -188,7 +188,7 @@ describe('daemonRPC constructor', () => {
         });
 
         describe('gettransactions()', () => {
-          it('should get info of transaction', done => {
+          it('should get transaction info', done => {
             daemonRPC.gettransactions(['99a992675f1204ea114e1ad14f2e622554f46b3a9cacc91c6255b789906269d5'])
             .then(result => {
               result.should.be.a.Object();
@@ -196,6 +196,19 @@ describe('daemonRPC constructor', () => {
               result.txs[0].should.be.a.Object();
               result.txs[0].block_height.should.be.a.Number();
               result.txs[0].block_height.should.be.equal(42069);
+            })
+            .then(done, done);
+          });
+        });
+
+        describe('get_outs()', () => {
+          it('should get output info', done => {
+            daemonRPC.get_outs([{ index: 77777 }])
+            .then(result => {
+              result.should.be.a.Object();
+              result.outs.should.be.a.Array();
+              result.outs[0].should.be.a.Object();
+              result.outs[0].key.should.be.a.String();
             })
             .then(done, done);
           });
