@@ -145,6 +145,19 @@ describe('daemonRPC constructor', () => {
             .then(done, done);
           });
         });
+
+
+        describe('get_info()', () => {
+          it('should get info', done => {
+            daemonRPC.get_info()
+            .then(result => {
+              result.should.be.a.Object();
+              result.mainnet.should.be.a.Boolean();
+              result.status.should.be.a.String();
+            })
+            .then(done, done);
+          });
+        });
       });
     })
     .catch(error => {
