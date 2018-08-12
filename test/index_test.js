@@ -80,6 +80,7 @@ describe('daemonRPC constructor', () => {
             daemonRPC.getlastblockheader()
             .then(result => {
               result.should.be.a.Object();
+              result.block_header.should.be.a.Object();
               result.block_header.hash.should.be.a.String();
               result.block_header.nonce.should.be.a.Number();
             })
@@ -88,12 +89,27 @@ describe('daemonRPC constructor', () => {
         });
 
         describe('getblockheaderbyhash()', () => {
-          it('should return block 42069\'s header', done => {
-            daemonRPC.getblockheaderbyhash('4aff3d3f2a939ddf7c971b57b428841bccde6dc937404346398c4133ba37359b')
+          it('should return block 31337\'s header', done => {
+            daemonRPC.getblockheaderbyhash('3b380d7dac4fe41864fe2fc4b7ef7b2e70575d4d847d1f590550b88dc2e9fdf9')
             .then(result => {
               result.should.be.a.Object();
+              result.block_header.should.be.a.Object();
               result.block_header.height.should.be.a.Number();
-              result.block_header.height.should.be.equal(42069);
+              result.block_header.height.should.be.equal(31337);
+              result.block_header.nonce.should.be.a.Number();
+            })
+            .then(done, done);
+          });
+        });
+
+        describe('getblockheaderbyheight()', () => {
+          it('should return block 1234567\'s header', done => {
+            daemonRPC.getblockheaderbyheight(1234567)
+            .then(result => {
+              result.should.be.a.Object();
+              result.block_header.should.be.a.Object();
+              result.block_header.hash.should.be.a.String();
+              result.block_header.hash.should.be.equal('f093439d0dd48010a22fdb615a659e22738a10991871b5dc2335efa69008a8cd');
               result.block_header.nonce.should.be.a.Number();
             })
             .then(done, done);
