@@ -86,6 +86,19 @@ describe('daemonRPC constructor', () => {
             .then(done, done);
           });
         });
+
+        describe('getblockheaderbyhash()', () => {
+          it('should return block 42069\'s header', done => {
+            daemonRPC.getblockheaderbyhash('4aff3d3f2a939ddf7c971b57b428841bccde6dc937404346398c4133ba37359b')
+            .then(result => {
+              result.should.be.a.Object();
+              result.block_header.height.should.be.a.Number();
+              result.block_header.height.should.be.equal(42069);
+              result.block_header.nonce.should.be.a.Number();
+            })
+            .then(done, done);
+          });
+        });
       });
     })
     .catch(error => {
