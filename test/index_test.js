@@ -146,13 +146,29 @@ describe('daemonRPC constructor', () => {
           });
         });
 
+        // TODO test get_connections if connected to local node
+        // describe('get_connections()', () => {
+        //   it('should get remote daemon connections', done => {
+        //     daemonRPC.get_connections()
+        //     .then(result => {
+        //       result.should.be.a.Object();
+        //       console.log(result)
+        //       // result.blob.should.be.a.String();
+        //       // result.block_header.should.be.a.Object();
+        //       // result.block_header.hash.should.be.a.String();
+        //       // result.block_header.hash.should.be.equal('e262d0b6cdae7dabae5e30e4226f70c34254674b8b56b7d992377c4faca67024');
+        //       // result.block_header.nonce.should.be.a.Number();
+        //     })
+        //     .then(done, done);
+        //   });
+        // });
 
         describe('get_info()', () => {
-          it('should get info', done => {
+          it('should get general blockchain and network info', done => {
             daemonRPC.get_info()
             .then(result => {
               result.should.be.a.Object();
-              result.mainnet.should.be.a.Boolean();
+              result.tx_count.should.be.a.Number();
               result.status.should.be.a.String();
             })
             .then(done, done);
