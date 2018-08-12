@@ -60,6 +60,18 @@ describe('daemonRPC constructor', () => {
             .then(done, done);
           });
         });
+
+        describe('getblocktemplate()', () => {
+          it('should return a block template', done => {
+            daemonRPC.getblocktemplate('44AFFq5kSiGBoZ4NMDwYtN18obc8AemS33DBLWs3H7otXft3XjrpDtQGv7SqSsaBYBb98uNbr2VBBEt7f2wfn3RVGQBEP3A', 255)
+            .then(result => {
+              result.should.be.a.Object();
+              result.blocktemplate_blob.should.be.a.String();
+              result.height.should.be.a.Number();
+            })
+            .then(done, done);
+          });
+        });
       });
     })
     .catch(error => {
