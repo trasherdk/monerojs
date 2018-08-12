@@ -9,7 +9,7 @@ describe('daemonRPC constructor', () => {
     .then(daemon => { // TODO add type for daemon
       daemon.should.be.a.Object();
 
-      daemonRPC = daemon; // Store daemon in global variable
+      daemonRPC = daemon; // Store daemon interface in global variable
 
       describe('daemonRPC methods', () => {
         describe('getblockcount()', () => {
@@ -40,8 +40,11 @@ describe('daemonRPC constructor', () => {
 });
 
 // Only test monero-wallet-rpc if available
-var checkForLocalWalletRPC = new Monero.walletRPC({ test: true })
-.then(() => {
+var checkForLocalWalletRPC = new Monero.walletRPC({ initialize: false })
+.then(wallet => {
+  wallet.should.be.a.Object();
+
+  walletRPC = wallet; // Store wallet interface in global variable
   // monero-wallet-rpc available; test
   describe('walletRPC constructor', () => {
     it('should connect to daemon', done => {
