@@ -1,72 +1,107 @@
 'use strict';
 var Monero = require('../index.js');
 
-describe('Monero', () => {
-  var daemonRPC = new Monero.daemonRPC();
+// TODO test each each remote node for availability
 
-  describe('daemonRPC', () => {
-    describe('getblockcount()', () => {
-      it('should return the node\'s block height', (done) => {
-        daemonRPC.getblockcount('monero_wallet').then(result => {
-          if (result.hasOwnProperty('error')) {
-            if (result.hasOwnProperty('error')) {
-              if (result.error.code == -21) {
-                result.error.code.should.be.equal(-21)
+describe('daemonRPC constructor', () => {
+  it('should connect to daemon', done => {
+    var daemonRPC = new Monero.daemonRPC({ autoconnect: true, random: true })
+    .then(daemon => { // TODO add type for daemon
+      daemon.should.be.a.Object();
+
+      daemonRPC = daemon; // Store daemon in global variable
+
+      describe('daemonRPC methods', () => {
+        describe('getblockcount()', () => {
+          it('should return the node\'s block height', done => {
+            daemonRPC.getblockcount()
+            .then(result => {
+              if (result.hasOwnProperty('error')) {
+                if (result.hasOwnProperty('error')) {
+                  if (result.error.code == -21) {
+                    result.error.code.should.be.equal(-21)
+                  }
+                }
+              } else {
+                result.should.be.a.Object();
               }
+            })
+            .then(done, done);
+          });
+        });
+      });
+    })
+    .catch(error => {
+      // TODO handle error
+    })
+    .then(done, done);
+  })
+  .timeout(5000);
+});
+
+// Only test monero-wallet-rpc if available
+var checkForLocalWalletRPC = new Monero.walletRPC({ autoinitialize: false })._autoconnect()
+.then(wallet => { // TODO add type for wallet
+  // monero-wallet-rpc available; test
+  describe('walletRPC constructor', () => {
+    it('should connect to daemon', done => {
+      var walletRPC = new Monero.walletRPC();
+      walletRPC.should.be.a.Object();
+      done();
+    });
+
+    describe('walletRPC methods', () => {
+      describe('create_wallet()', () => {
+        it('should create a new wallet monero_wallet (if monero_wallet doesn\'t exist))', done => {
+          walletRPC.create_wallet('monero_wallet').then(result => {
+            if (result.hasOwnProperty('error')) {
+              if (result.hasOwnProperty('error')) {
+                if (result.error.code == -21) {
+                  result.error.code.should.be.equal(-21)
+                }
+              }
+            } else {
+              result.should.be.a.Object();
             }
-          } else {
+            done();
+          })
+        })
+      })
+
+      describe('open_wallet()', () => {
+        it('should open monero_wallet', done => {
+          walletRPC.open_wallet('monero_wallet').then(result => {
             result.should.be.a.Object();
-          }
-          done();
+            done();
+          })
+        })
+      })
+
+      describe('getbalance()', () => {
+        it('should retrieve the account balance', done => {
+          walletRPC.getbalance().then(result => {
+            result.balance.should.be.a.Number();
+            done();
+          })
+        })
+      })
+
+      describe('getaddress()', () => {
+        it('should return the account address', done => {
+          walletRPC.getaddress().then(result => {
+            result.address.should.be.a.String();
+            done();
+          })
         })
       })
     })
   });
-  var walletRPC = new Monero.walletRPC();
-
-  describe('walletRPC', () => {
-    describe('create_wallet()', () => {
-      it('should create a new wallet monero_wallet (if monero_wallet doesn\'t exist))', (done) => {
-        walletRPC.create_wallet('monero_wallet').then(result => {
-          if (result.hasOwnProperty('error')) {
-            if (result.hasOwnProperty('error')) {
-              if (result.error.code == -21) {
-                result.error.code.should.be.equal(-21)
-              }
-            }
-          } else {
-            result.should.be.a.Object();
-          }
-          done();
-        })
-      })
-    })
-
-    describe('open_wallet()', () => {
-      it('should open monero_wallet', (done) => {
-        walletRPC.open_wallet('monero_wallet').then(result => {
-          result.should.be.a.Object();
-          done();
-        })
-      })
-    })
-
-    describe('getbalance()', () => {
-      it('should retrieve the account balance', (done) => {
-        walletRPC.getbalance().then(result => {
-          result.balance.should.be.a.Number();
-          done();
-        })
-      })
-    })
-
-    describe('getaddress()', () => {
-      it('should return the account address', (done) => {
-        walletRPC.getaddress().then(result => {
-          result.address.should.be.a.String();
-          done();
-        })
-      })
-    })
-  })
 })
+.catch(error => {
+  // monero-wallet-rpc unavailable; report that tests are not possible
+  describe('walletRPC constructor', () => {
+    it('should not test monero-wallet-rpc unless it is running', done => {
+      done();
+    });
+  });
+});
