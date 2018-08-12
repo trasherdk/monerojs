@@ -174,6 +174,18 @@ describe('daemonRPC constructor', () => {
             .then(done, done);
           });
         });
+
+        describe('hard_fork_info()', () => {
+          it('should get hard info', done => {
+            daemonRPC.hard_fork_info()
+            .then(result => {
+              result.should.be.a.Object();
+              result.earliest_height.should.be.a.Number();
+              result.version.should.be.a.Number();
+            })
+            .then(done, done);
+          });
+        });
       });
     })
     .catch(error => {
