@@ -1,7 +1,7 @@
 {
   "name": "moneronodejs",
   "version": "1.0.0",
-  "description": "A Monero library written in Node.js by the Monero-Integrations team.",
+  "description": "A Monero library written in Node.js",
   "main": "index.js",
   "scripts": {
     "test": "node_modules/.bin/mocha"
@@ -13,16 +13,17 @@
   "keywords": [
     "monero"
   ],
-  "author": "Monero-Integrations team <support@monerointegrations.com> (https://monerointegrations.com)",
+  "author": "sneurlax <sneurlax@gmail.com> (https://github.com/sneurlax)",
   "constributors": [
     "SerHack <nico@serhack.me> (https://serhack.me)",
+    "CryptoChangements <bW9uZXJv@gmail.com> (https://github.com/cryptochangements34)",
     "sneurlax <sneurlax@gmail.com>"
   ],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/monero-integrations/moneronodejs/issues"
+    "url": "https://github.com/sneurlax/moneronodejs/issues"
   },
-  "homepage": "https://github.com/monero-integrations/moneronodejs#readme",
+  "homepage": "https://github.com/sneurlax/moneronodejs#readme",
   "dependencies": {
     "request": "^2.85.0",
     "request-promise": "^4.2.2"
