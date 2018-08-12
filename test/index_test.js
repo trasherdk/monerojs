@@ -115,6 +115,21 @@ describe('daemonRPC constructor', () => {
             .then(done, done);
           });
         });
+
+        describe('getblock_by_hash()', () => {
+          it('should return block 101010', done => {
+            daemonRPC.getblock_by_hash('5ab00b5f78f731a64ace5558c909cf2d74021d41218021806845197107c6709a')
+            .then(result => {
+              result.should.be.a.Object();
+              result.blob.should.be.a.String();
+              result.block_header.should.be.a.Object();
+              result.block_header.height.should.be.a.Number();
+              result.block_header.height.should.be.equal(101010);
+              result.block_header.nonce.should.be.a.Number();
+            })
+            .then(done, done);
+          });
+        });
       });
     })
     .catch(error => {
