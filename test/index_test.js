@@ -186,6 +186,20 @@ describe('daemonRPC constructor', () => {
             .then(done, done);
           });
         });
+
+        describe('gettransactions()', () => {
+          it('should get info of transaction', done => {
+            daemonRPC.gettransactions(['99a992675f1204ea114e1ad14f2e622554f46b3a9cacc91c6255b789906269d5'])
+            .then(result => {
+              result.should.be.a.Object();
+              result.txs.should.be.a.Array();
+              result.txs[0].should.be.a.Object();
+              result.txs[0].block_height.should.be.a.Number();
+              result.txs[0].block_height.should.be.equal(42069);
+            })
+            .then(done, done);
+          });
+        });
       });
     })
     .catch(error => {
