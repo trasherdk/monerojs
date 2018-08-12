@@ -130,6 +130,21 @@ describe('daemonRPC constructor', () => {
             .then(done, done);
           });
         });
+
+        describe('getblock_by_height()', () => {
+          it('should return block 202020', done => {
+            daemonRPC.getblock_by_height(202020)
+            .then(result => {
+              result.should.be.a.Object();
+              result.blob.should.be.a.String();
+              result.block_header.should.be.a.Object();
+              result.block_header.hash.should.be.a.String();
+              result.block_header.hash.should.be.equal('e262d0b6cdae7dabae5e30e4226f70c34254674b8b56b7d992377c4faca67024');
+              result.block_header.nonce.should.be.a.Number();
+            })
+            .then(done, done);
+          });
+        });
       });
     })
     .catch(error => {
