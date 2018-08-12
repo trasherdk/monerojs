@@ -1,5 +1,4 @@
-# Monero Library
-A Monero library written in Node.js by the [Monero Integrations](https://monerointegrations.com) [team](https://github.com/monero-integrations/moneronodejs/graphs/contributors).
+# Node.js Monero Library
 
 [//]: # (**NOTE:** due to the existence of the `monero-nodejs` package by PsychicCat at https://github.com/PsychicCat/monero-nodejs , `moneronodejs` will never be publishable on npm.  Thus, this repository is being finalized, archived, and continued as `monerojs` at https://github/com/sneurlax/monerojs.  If the Monero Integrations team will merge this into monero-ingtegrations/monerojs https://github.com/monero-integrations/monerojs then it will be revived and updated as needed, otherwise please refer to `monerojs` https://github.com/sneurlax/monerojs for the latest code and best features.)
 
@@ -63,7 +62,9 @@ const daemonRPC = new Monero.daemonRPC({ hostname: '127.0.0.1', port: 28081 })
 #### Connect to Monero wallet (`monero-wallet-rpc`)
 
 ```js
-const walletRPC = new Monero.walletRPC();
+// const walletRPC = new Monero.walletRPC('127.0.0.1', 28083, 'user', 'pass', 'http'); // Example of passing in parameters
+// const walletRPC = new Monero.walletRPC({ port: 28083, protocol: 'https'); // Parameters can be passed in as an object/dictionary
+const walletRPC = new Monero.walletRPC(); // Connect with defaults
 
 walletRPC.create_wallet('monero_wallet', '')
 .then(new_wallet => {
