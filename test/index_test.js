@@ -187,6 +187,18 @@ describe('daemonRPC constructor', () => {
           });
         });
 
+        describe('getheight()', () => {
+          it('should get node\'s current height', done => {
+            daemonRPC.getheight()
+            .then(result => {
+              result.should.be.a.String();
+              JSON.parse(result).should.be.a.Object();
+              JSON.parse(result).height.should.be.a.Number();
+            })
+            .then(done, done);
+          });
+        });
+
         describe('gettransactions()', () => {
           it('should get transaction info', done => {
             daemonRPC.gettransactions(['99a992675f1204ea114e1ad14f2e622554f46b3a9cacc91c6255b789906269d5'])
