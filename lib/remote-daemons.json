@@ -40,11 +40,6 @@
     "protocol": "http"
   },
   {
-    "hostname": "as.node.moneroworld.com",
-    "port": 18089,
-    "protocol": "http"
-  },
-  {
     "hostname": "na.node.moneroworld.com",
     "port": 18089,
     "protocol": "http"

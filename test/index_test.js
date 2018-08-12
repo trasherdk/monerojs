@@ -3,6 +3,28 @@ var Monero = require('../index.js');
 
 // TODO test each each remote node for availability
 
+describe('remote nodes', () => {
+  const daemons = require('../lib/remote-daemons.json');
+
+  for (let i in daemons) {
+    let daemon = daemons[i];
+
+    it(`should connect to daemon at ${daemon['hostname']}`, done => {
+      let daemonRPC = new Monero.daemonRPC(daemon) // Check if remote daemon
+      .then(daemon => {
+        daemon.should.be.a.Object();
+        // monero-wallet-rpcremote daemon available
+        done();
+      })
+      .catch(err => {
+        // remote daemon unavailable
+      })
+      .then(done, done);
+    })
+    .timeout(5000);
+  }
+});
+
 describe('daemonRPC constructor', () => {
   it('should connect to daemon', done => {
     var daemonRPC = new Monero.daemonRPC({ autoconnect: true, random: true })
