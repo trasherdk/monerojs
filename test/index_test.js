@@ -74,6 +74,18 @@ describe('daemonRPC constructor', () => {
         });
 
         // TODO test submitblock
+
+        describe('getlastblockheader()', () => {
+          it('should return block header', done => {
+            daemonRPC.getlastblockheader()
+            .then(result => {
+              result.should.be.a.Object();
+              result.block_header.hash.should.be.a.String();
+              result.block_header.nonce.should.be.a.Number();
+            })
+            .then(done, done);
+          });
+        });
       });
     })
     .catch(error => {
