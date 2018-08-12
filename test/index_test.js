@@ -8,7 +8,7 @@ describe('remote nodes', () => {
     let daemon = daemons[i];
 
     it(`should connect to daemon at ${daemon['hostname']}`, done => {
-      let daemonRPC = new Monero.daemonRPC(daemon) // Check if remote daemon
+      let daemonRPC = new Monero.daemonRPC(daemon) // Check if remote daemon is available
       .then(daemon => {
         daemon.should.be.a.Object();
         // monero-wallet-rpcremote daemon available
@@ -24,7 +24,7 @@ describe('remote nodes', () => {
 });
 
 describe('daemonRPC constructor', () => {
-  it('should connect to daemon', done => {
+  it('should autoconnect to daemon', done => {
     var daemonRPC = new Monero.daemonRPC({ autoconnect: true, random: true })
     .then(daemon => { // TODO add type for daemon
       daemon.should.be.a.Object();
@@ -67,7 +67,7 @@ var checkForLocalWalletRPC = new Monero.walletRPC({ initialize: false })
   walletRPC = wallet; // Store wallet interface in global variable
   // monero-wallet-rpc available; test
   describe('walletRPC constructor', () => {
-    it('should connect to daemon', done => {
+    it('should connect to wallet', done => {
       var walletRPC = new Monero.walletRPC();
       walletRPC.should.be.a.Object();
       done();
