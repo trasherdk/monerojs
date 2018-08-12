@@ -17,7 +17,8 @@ var daemonRPC = new Monero.daemonRPC({ autoconnect: true, random: true })
 
 // Check if monero-wallet-rpc if available
 var checkForLocalWalletRPC = new Monero.walletRPC({ test: true })
-.then(wallet => { // TODO add type for wallet
+.then(() => {
+  // monero-wallet-rpc available
   const walletRPC = new Monero.walletRPC();
 
   walletRPC.create_wallet('monero_wallet', '')
@@ -32,6 +33,6 @@ var checkForLocalWalletRPC = new Monero.walletRPC({ test: true })
   });
 })
 .catch(error => {
-  // monero-wallet-rpc unavailable; report that tests are not possible
+  // monero-wallet-rpc unavailable
   console.error('monero-wallet-rpc is not running')
 });

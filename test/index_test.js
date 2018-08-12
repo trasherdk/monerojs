@@ -40,8 +40,8 @@ describe('daemonRPC constructor', () => {
 });
 
 // Only test monero-wallet-rpc if available
-var checkForLocalWalletRPC = new Monero.walletRPC({ autoinitialize: false })._autoconnect()
-.then(wallet => { // TODO add type for wallet
+var checkForLocalWalletRPC = new Monero.walletRPC({ test: true })
+.then(() => {
   // monero-wallet-rpc available; test
   describe('walletRPC constructor', () => {
     it('should connect to daemon', done => {
