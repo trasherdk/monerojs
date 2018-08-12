@@ -1,8 +1,6 @@
 'use strict';
 var Monero = require('../index.js');
 
-// TODO test each each remote node for availability
-
 describe('remote nodes', () => {
   const daemons = require('../lib/remote-daemons.json');
 
