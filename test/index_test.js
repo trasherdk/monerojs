@@ -72,6 +72,8 @@ describe('daemonRPC constructor', () => {
             .then(done, done);
           });
         });
+
+        // TODO test submitblock
       });
     })
     .catch(error => {
