@@ -8,5 +8,15 @@
     "hostname": "127.0.0.1",
     "port": 18089,
     "protocol": "http"
+  },
+  {
+    "hostname": "127.0.0.1",
+    "port": 28081,
+    "protocol": "http"
+  },
+  {
+    "hostname": "127.0.0.1",
+    "port": 28089,
+    "protocol": "http"
   }
 ]
