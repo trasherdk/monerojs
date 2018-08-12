@@ -49,6 +49,17 @@ describe('daemonRPC constructor', () => {
             .then(done, done);
           });
         });
+
+        describe('on_getblockhash()', () => {
+          it('should return the block 42069\'s hash', done => {
+            daemonRPC.on_getblockhash(42069)
+            .then(result => {
+              result.should.be.a.String();
+              result.should.be.equal('4aff3d3f2a939ddf7c971b57b428841bccde6dc937404346398c4133ba37359b');
+            })
+            .then(done, done);
+          });
+        });
       });
     })
     .catch(error => {
@@ -80,7 +91,7 @@ var checkForLocalWalletRPC = new Monero.walletRPC({ initialize: false })
             if (result.hasOwnProperty('error')) {
               if (result.hasOwnProperty('error')) {
                 if (result.error.code == -21) {
-                  result.error.code.should.be.equal(-21)
+                  result.error.code.should.be.equal(-21);
                 }
               }
             } else {
