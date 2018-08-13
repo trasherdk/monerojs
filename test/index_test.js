@@ -199,19 +199,6 @@ describe('daemonRPC constructor', () => {
           });
         });
 
-        describe('is_key_image_spent()', () => {
-          it('should get spend status of key image', done => {
-            daemonRPC.is_key_image_spent(['8d1bd8181bf7d857bdb281e0153d84cd55a3fcaa57c3e570f4a49f935850b5e3'])
-            .then(result => {
-              result.should.be.a.Object();
-              result.spent_status.should.be.a.Array();
-              result.spent_status[0].should.be.a.Number();
-              result.spent_status[0].should.be.equal(1);
-            })
-            .then(done, done);
-          });
-        });
-
         describe('gettransactions()', () => {
           it('should get transaction info', done => {
             daemonRPC.gettransactions(['99a992675f1204ea114e1ad14f2e622554f46b3a9cacc91c6255b789906269d5'])
@@ -225,6 +212,28 @@ describe('daemonRPC constructor', () => {
             .then(done, done);
           });
         });
+
+        describe('is_key_image_spent()', () => {
+          it('should get spend status of key image', done => {
+            daemonRPC.is_key_image_spent(['8d1bd8181bf7d857bdb281e0153d84cd55a3fcaa57c3e570f4a49f935850b5e3'])
+            .then(result => {
+              result.should.be.a.Object();
+              result.spent_status.should.be.a.Array();
+              result.spent_status[0].should.be.a.Number();
+              result.spent_status[0].should.be.equal(1);
+            })
+            .then(done, done);
+          });
+        });
+
+        // TODO test send_raw_transaction
+        // TODO test start_mining
+        // TODO test stop_mining
+        // TODO test mining_status
+        // TODO test save_bc
+        // TODO test get_peer_list
+        // TODO test set_log_hash_rate
+        // TODO test set_log_level
 
         describe('get_outs()', () => {
           it('should get output info', done => {
