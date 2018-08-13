@@ -1,25 +1,21 @@
-# Node.js Monero Library
+# `monerojs`
+A Monero library written in ES6 JavaScript
 
-[//]: # (**NOTE:** due to the existence of the `monero-nodejs` package by PsychicCat at https://github.com/PsychicCat/monero-nodejs , `moneronodejs` will never be publishable on npm.  Thus, this repository is being finalized, archived, and continued as `monerojs` at https://github/com/sneurlax/monerojs.  If the Monero Integrations team will merge this into monero-ingtegrations/monerojs https://github.com/monero-integrations/monerojs then it will be revived and updated as needed, otherwise please refer to `monerojs` https://github.com/sneurlax/monerojs for the latest code and best features.)
+This library has two main parts: a Monero daemon (`monerod`) JSON-RPC API wrapper, `daemonRPC.js`, and a Monero wallet (`monero-wallet-rpc`) JSON-RPC API wrapper, `walletRPC.js`.
 
-## How It Works
-This library has two main parts: a Monero daemon (`monerod`) JSON-RPC API wrapper, `daemonRPC.js`, and a Monero wallet (`monero-wallet-rpc`) JSON RPC API wrapper, `walletRPC.js`.
-
-## Configuration
 ### Requirements
  - Node.js
-
-*Monero daemon now optional!*
+ - A Monero node (remote nodes support most, but not all, methods.)
 
 ## Installation
 ```bash
-npm install moneronodejs
+npm install monerojs
 ```
 *`--save` optional*
 
 ## Usage
 
-This library makes heavy use of promises. Monero daemon and wallet JSON-RPC interfaces their methods return promises.
+JSON-RPC interfaces and their methods are wrapped in promises.
 
 #### Autoconnect to Monero daemon (`monerod`)
 
