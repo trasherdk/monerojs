@@ -213,6 +213,18 @@ describe('daemonRPC constructor', () => {
           });
         });
 
+        describe('get_alt_blocks_hashes()', () => {
+          it('should get orphaned block hashes', done => {
+            daemonRPC.get_alt_blocks_hashes()
+            .then(result => {
+              result.should.be.a.String();
+              JSON.parse(result).should.be.a.Object();
+              JSON.parse(result).blks_hashes.should.be.a.Array();
+            })
+            .then(done, done);
+          });
+        });
+
         describe('is_key_image_spent()', () => {
           it('should get spend status of key image', done => {
             daemonRPC.is_key_image_spent(['8d1bd8181bf7d857bdb281e0153d84cd55a3fcaa57c3e570f4a49f935850b5e3'])
