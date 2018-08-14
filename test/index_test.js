@@ -246,6 +246,20 @@ describe('daemonRPC constructor', () => {
         // TODO test get_peer_list
         // TODO test set_log_hash_rate
         // TODO test set_log_level
+        // TODO test set_log_categories
+
+        describe('get_transaction_pool()', () => {
+          it('should get transaction pool info', done => {
+            daemonRPC.get_transaction_pool()
+            .then(result => {
+              result.should.be.a.String();
+              // TODO parse JSON
+              // JSON.parse(result).should.be.a.Object();
+              // JSON.parse(result).key.should.be.a.String();
+            })
+            .then(done, done);
+          });
+        });
 
         describe('get_outs()', () => {
           it('should get output info', done => {
