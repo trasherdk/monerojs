@@ -261,6 +261,21 @@ describe('daemonRPC constructor', () => {
           });
         });
 
+        describe('get_transaction_pool_stats()', () => {
+          it('should get transaction pool stats', done => {
+            daemonRPC.get_transaction_pool_stats()
+            .then(result => {
+              result.should.be.a.String();
+              // TODO parse JSON
+              // JSON.parse(result).should.be.a.Object();
+              // JSON.parse(result).pool_stats.should.be.a.Object();
+              // JSON.parse(result).pool_stats.txs_total.should.be.a.Number();
+              // JSON.parse(result).pool_stats.histo.should.be.a.String();
+            })
+            .then(done, done);
+          });
+        });
+
         describe('get_outs()', () => {
           it('should get output info', done => {
             daemonRPC.get_outs([{ index: 77777 }])
