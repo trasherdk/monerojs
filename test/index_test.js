@@ -163,13 +163,14 @@ describe('daemonRPC constructor', () => {
         //   });
         // });
 
-        describe('get_info()', () => {
-          it('should get general blockchain and network info', done => {
-            daemonRPC.get_info()
+        describe('get_outs()', () => {
+          it('should get output info', done => {
+            daemonRPC.get_outs([{ index: 77777 }])
             .then(result => {
               result.should.be.a.Object();
-              result.tx_count.should.be.a.Number();
-              result.status.should.be.a.String();
+              result.outs.should.be.a.Array();
+              result.outs[0].should.be.a.Object();
+              result.outs[0].key.should.be.a.String();
             })
             .then(done, done);
           });
@@ -271,6 +272,29 @@ describe('daemonRPC constructor', () => {
               // JSON.parse(result).pool_stats.should.be.a.Object();
               // JSON.parse(result).pool_stats.txs_total.should.be.a.Number();
               // JSON.parse(result).pool_stats.histo.should.be.a.String();
+            })
+            .then(done, done);
+          });
+        });
+
+        describe('get_info()', () => {
+          it('should get general blockchain and network info', done => {
+            daemonRPC.get_info()
+            .then(result => {
+              result.should.be.a.Object();
+              result.tx_count.should.be.a.Number();
+              result.status.should.be.a.String();
+            })
+            .then(done, done);
+          });
+        });
+
+        describe('get_limit()', () => {
+          it('should get daemon bandwidth limits', done => {
+            daemonRPC.get_limit()
+            .then(result => {
+              JSON.parse(result).should.be.a.Object();
+              JSON.parse(result).limit_down.should.be.a.Number();
             })
             .then(done, done);
           });
