@@ -311,6 +311,28 @@ describe('daemonRPC constructor', () => {
           });
         });
 
+        describe('out_peers()', () => {
+          it('should set maximum number of outgoing peers', done => {
+            daemonRPC.out_peers(10000)
+            .then(result => {
+              JSON.parse(result).should.be.a.Object();
+              JSON.parse(result).status.should.be.a.equal('OK');
+            })
+            .then(done, done);
+          });
+        });
+
+        describe('in_peers()', () => {
+          it('should set maximum number of incoming peers', done => {
+            daemonRPC.in_peers(10000)
+            .then(result => {
+              JSON.parse(result).should.be.a.Object();
+              JSON.parse(result).status.should.be.a.equal('OK');
+            })
+            .then(done, done);
+          });
+        });
+
         describe('get_outs()', () => {
           it('should get output info', done => {
             daemonRPC.get_outs([{ index: 77777 }])
