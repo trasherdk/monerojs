@@ -24,6 +24,7 @@ describe('remote nodes', () => {
 });
 
 describe('daemonRPC constructor', () => {
+  // TODO test multiple Monero networks (mainnet, testnet, stagenet, etc.)
   it('should autoconnect to daemon', done => {
     var daemonRPC = new Monero.daemonRPC({ autoconnect: true, random: true })
     .then(daemon => { // TODO add type for daemon
