@@ -300,6 +300,17 @@ describe('daemonRPC constructor', () => {
           });
         });
 
+        describe('set_limit()', () => {
+          it('should set daemon bandwidth limits', done => {
+            daemonRPC.set_limit(-1, -1)
+            .then(result => {
+              JSON.parse(result).should.be.a.Object();
+              JSON.parse(result).limit_down.should.be.a.Number();
+            })
+            .then(done, done);
+          });
+        });
+
         describe('get_outs()', () => {
           it('should get output info', done => {
             daemonRPC.get_outs([{ index: 77777 }])
