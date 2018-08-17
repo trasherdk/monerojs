@@ -290,6 +290,7 @@ describe('daemonRPC constructor', () => {
           });
         });
 
+        // TODO only test on local daemon
         describe('get_limit()', () => {
           it('should get daemon bandwidth limits', done => {
             daemonRPC.get_limit()
@@ -301,6 +302,7 @@ describe('daemonRPC constructor', () => {
           });
         });
 
+        // TODO only test on local daemon
         describe('set_limit()', () => {
           it('should set daemon bandwidth limits', done => {
             daemonRPC.set_limit(-1, -1)
@@ -312,6 +314,7 @@ describe('daemonRPC constructor', () => {
           });
         });
 
+        // TODO only test on local daemon
         describe('out_peers()', () => {
           it('should set maximum number of outgoing peers', done => {
             daemonRPC.out_peers(10000)
@@ -323,6 +326,7 @@ describe('daemonRPC constructor', () => {
           });
         });
 
+        // TODO only test on local daemon
         describe('in_peers()', () => {
           it('should set maximum number of incoming peers', done => {
             daemonRPC.in_peers(10000)
@@ -346,6 +350,21 @@ describe('daemonRPC constructor', () => {
             .then(done, done);
           });
         });
+
+        // // Make sure to test stop_daemon() last
+        // // TODO only test on local daemon
+        // describe('stop_daemon()', () => {
+        //   it('should stop the daemon', done => {
+        //     daemonRPC.stop_daemon()
+        //     .then(result => {
+        //       JSON.parse(result).should.be.a.Object();
+        //       JSON.parse(result).status.should.be.a.equal('OK');
+
+        //       // TODO restart daemon
+        //     })
+        //     .then(done, done);
+        //   });
+        // });
       });
     })
     .catch(error => {
