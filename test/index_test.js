@@ -496,6 +496,18 @@ describe('daemonRPC constructor', () => {
             });
           });
 
+          describe('set_log_hash_rate()', () => {
+            it('should set hash rate log dislay mode', done => {
+              daemonRPC.set_log_hash_rate(true)
+              .then(result => {
+                result.should.be.a.Object();
+                result.status.should.be.a.String();
+                result.status.should.be.equal('OK'); // TODO Allow for 'NOT MINING' if not mining
+              })
+              .then(done, done);
+            });
+          });
+
           describe('stop_mining()', () => {
             it('should stop mining', done => {
               daemonRPC.stop_mining()
@@ -538,18 +550,6 @@ describe('daemonRPC constructor', () => {
             });
           });
 
-          describe('set_log_hash_rate()', () => {
-            it('should set hash rate log dislay mode', done => {
-              daemonRPC.set_log_hash_rate(true)
-              .then(result => {
-                result.should.be.a.Object();
-                result.status.should.be.a.String();
-                result.status.should.be.equal('OK');
-              })
-              .then(done, done);
-            });
-          });
-
           describe('set_log_level()', () => {
             it('should set log verbosity', done => {
               daemonRPC.set_log_level(0)
@@ -562,7 +562,18 @@ describe('daemonRPC constructor', () => {
             });
           });
 
-          // TODO test set_log_categories
+          describe('set_log_categories()', () => {
+            it('should set log categories', done => {
+              daemonRPC.set_log_categories('*:WARNING')
+              .then(result => {
+                result.should.be.a.Object();
+                result.status.should.be.a.String();
+                result.status.should.be.equal('OK');
+                result.categories.should.be.a.String();
+              })
+              .then(done, done);
+            });
+          });
 
           describe('get_limit()', () => {
             it('should get daemon bandwidth limits', done => {
