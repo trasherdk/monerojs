@@ -12,6 +12,13 @@
       "port": 28083,
       "protocol": "http"
     }
+  ],
+  "stagenet": [
+    {
+      "hostname": "127.0.0.1",
+      "port": 38083,
+      "protocol": "http"
+    }
   ]
 }
 
