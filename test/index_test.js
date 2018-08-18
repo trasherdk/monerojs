@@ -262,27 +262,25 @@ describe('daemonRPC constructor', () => {
             hash2 = '7d0f8b2b38b43cb6cc47eb0dcff42d4780e20dbc12b32432c1d5f166f5c48d8b';
           } else if (network == 'stagenet') {
             height = 102;
-            hash1 = '';
-            hash2 = '';
+            hash1 = 'c0cf8bbff7bf84f1efa448394bd64b52a36f9f30ff56efb2f6c0302f7680ee3e';
+            hash2 = 'cb876ef4fda2057c41b8a484464d26b4c525b3db3d0051476681732940ad2890';
           }
 
           it(`should return block headers from blocks ${height} to ${height+1}`, done => {
             daemonRPC.getblockheadersrange(height, height+1)
             .then(result => {
-              console.log(result);
-              // result.should.be.a.Object();
-              // result.status.should.be.a.String();
-              // result.status.should.be.equal('OK');
-              // console.log(result.headers);
-              // result.headers.should.be.a.Array();
-              // result.headers[0].should.be.a.Object();
-              // result.headers[0].hash.should.be.a.String();
-              // // result.headers[0].hash.should.be.equal(hash);
-              // result.headers[0].nonce.should.be.a.Number();
-              // result.headers[1].should.be.a.Object();
-              // result.headers[1].hash.should.be.a.String();
-              // // result.headers[1].hash.should.be.equal(hash);
-              // result.headers[1].nonce.should.be.a.Number();
+              result.should.be.a.Object();
+              result.status.should.be.a.String();
+              result.status.should.be.equal('OK');
+              result.headers.should.be.a.Array();
+              result.headers[0].should.be.a.Object();
+              result.headers[0].hash.should.be.a.String();
+              // result.headers[0].hash.should.be.equal(hash);
+              result.headers[0].nonce.should.be.a.Number();
+              result.headers[1].should.be.a.Object();
+              result.headers[1].hash.should.be.a.String();
+              // result.headers[1].hash.should.be.equal(hash);
+              result.headers[1].nonce.should.be.a.Number();
             })
             .then(done, done);
           });
