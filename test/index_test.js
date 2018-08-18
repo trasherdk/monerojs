@@ -248,6 +248,46 @@ describe('daemonRPC constructor', () => {
           });
         });
 
+        describe('getblockheadersrange()', () => {
+          let height = 0;
+          let hash1 = '';
+          let hash2 = '';
+          if (network == 'mainnet') {
+            height = 1020304;
+            hash1 = 'bb3096056f16f7a439b73980f85ac21285f49eb888346447616ec1eff0e7ae63';
+            hash2 = '0027413cb75c9fe737ce45d8a157679e480e967c2ae69d616b5f24be9c997e3b';
+          } else if (network == 'testnet') {
+            height = 10203;
+            hash1 = '6d08e01524fe6f93eb694ec534145d732fa5ac06d504dbcf61056d33e67e6001';
+            hash2 = '7d0f8b2b38b43cb6cc47eb0dcff42d4780e20dbc12b32432c1d5f166f5c48d8b';
+          } else if (network == 'stagenet') {
+            height = 102;
+            hash1 = '';
+            hash2 = '';
+          }
+
+          it(`should return block headers from blocks ${height} to ${height+1}`, done => {
+            daemonRPC.getblockheadersrange(height, height+1)
+            .then(result => {
+              console.log(result);
+              // result.should.be.a.Object();
+              // result.status.should.be.a.String();
+              // result.status.should.be.equal('OK');
+              // console.log(result.headers);
+              // result.headers.should.be.a.Array();
+              // result.headers[0].should.be.a.Object();
+              // result.headers[0].hash.should.be.a.String();
+              // // result.headers[0].hash.should.be.equal(hash);
+              // result.headers[0].nonce.should.be.a.Number();
+              // result.headers[1].should.be.a.Object();
+              // result.headers[1].hash.should.be.a.String();
+              // // result.headers[1].hash.should.be.equal(hash);
+              // result.headers[1].nonce.should.be.a.Number();
+            })
+            .then(done, done);
+          });
+        });
+
         describe('getblock_by_hash()', () => {
           let hash = '';
           if (network == 'mainnet') {
