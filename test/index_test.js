@@ -672,12 +672,9 @@ describe('daemonRPC constructor', () => {
 //   console.log(1);
 //   // monero-wallet-rpc available; test
   describe('walletRPC constructor', () => {
-    console.log(2);
     it('should connect to wallet', done => {
-      console.log(3);
       var walletRPC = new Monero.walletRPC({ autoconnect: true, network: network, initialize: false })
       .then(wallet => {
-        console.log(4);
         wallet.should.be.a.Object();
 
         walletRPC = wallet; // Store daemon interface in global variable
