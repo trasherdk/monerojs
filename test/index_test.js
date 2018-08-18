@@ -92,9 +92,11 @@ describe('daemonRPC constructor', () => {
   })
   .timeout(5000);
 
+  let network = 'testnet';
+
   // TODO connect to fastest daemon from test above
   it('should connect to daemon', done => {
-    var daemonRPC = new Monero.daemonRPC({ autoconnect: true, random: true })
+    var daemonRPC = new Monero.daemonRPC({ autoconnect: true, random: true, network: network })
     .then(daemon => {
       daemon.should.be.a.Object();
 
@@ -127,7 +129,17 @@ describe('daemonRPC constructor', () => {
             .then(result => {
               // Why no status string?
               result.should.be.a.String();
-              result.should.be.equal('4aff3d3f2a939ddf7c971b57b428841bccde6dc937404346398c4133ba37359b');
+
+              let hash = '';
+              if (network == 'mainnet') {
+                hash = '4aff3d3f2a939ddf7c971b57b428841bccde6dc937404346398c4133ba37359b';
+              } else if (network == 'testnet') {
+                hash = '695d716a064ddd9e7b46e7f1fb5dc78285dd8c37ac91b5801e5f32f230bc7f1f';
+              } else if (network == 'stagenet') {
+                hash = 'e5e89dc38d1ed8de28f573fdcdffb95c0d6dd9ce5f49a4edc78c88a4cafe66ca';
+              }
+
+              result.should.be.equal(hash);
             })
             .then(done, done);
           });
@@ -135,13 +147,30 @@ describe('daemonRPC constructor', () => {
 
         describe('getblocktemplate()', () => {
           it('should return a block template', done => {
-            daemonRPC.getblocktemplate('44AFFq5kSiGBoZ4NMDwYtN18obc8AemS33DBLWs3H7otXft3XjrpDtQGv7SqSsaBYBb98uNbr2VBBEt7f2wfn3RVGQBEP3A', 255)
+            let address = '';
+            if (network == 'mainnet') {
+              address = '44AFFq5kSiGBoZ4NMDwYtN18obc8AemS33DBLWs3H7otXft3XjrpDtQGv7SqSsaBYBb98uNbr2VBBEt7f2wfn3RVGQBEP3A';
+            } else if (network == 'testnet') {
+              address = '9sykYqd8soGa9Fv8zDMdt2gN8z2Aj5qQeBNpXjxRowkyCoWCYxa3xumYQe5MmQJuFN5CVTQwK2gqtfBNsFqa16gp1L4uGBU';
+            } else if (network == 'stagenet') {
+              address = '56Gpz2CeLbq1KT6eTHCqH43StT8kh7WQs9ji8wmECS7WUAx85FHrRztebp48wgEt6kcRbTpvBhnktEyDHVhe7xjbTAzALiY';
+            }
+
+            daemonRPC.getblocktemplate(address, 255)
             .then(result => {
-              result.should.be.a.String();
-              JSON.parse(result).status.should.be.a.String();
-              JSON.parse(result).status.should.be.equal('OK');
-              JSON.parse(result).blocktemplate_blob.should.be.a.String();
-              JSON.parse(result).height.should.be.a.Number();
+              if (result.hasOwnProperty('error')) {
+                if (result.hasOwnProperty('error')) {
+                  if (result.error.code == -4) {
+                    result.error.code.should.be.equal(-4)
+                  }
+                }
+              } else {
+                result.should.be.a.Object();
+                result.status.should.be.a.String();
+                result.status.should.be.equal('OK');
+                result.blocktemplate_blob.should.be.a.String();
+                result.height.should.be.a.Number();
+              }
             })
             .then(done, done);
           });
@@ -166,7 +195,16 @@ describe('daemonRPC constructor', () => {
 
         describe('getblockheaderbyhash()', () => {
           it('should return block 31337\'s header', done => {
-            daemonRPC.getblockheaderbyhash('3b380d7dac4fe41864fe2fc4b7ef7b2e70575d4d847d1f590550b88dc2e9fdf9')
+            let hash = '';
+            if (network == 'mainnet') {
+              hash = '3b380d7dac4fe41864fe2fc4b7ef7b2e70575d4d847d1f590550b88dc2e9fdf9';
+            } else if (network == 'testnet') {
+              hash = '3fd46824b2a1143b72fcb1eed9294c817ab37a3ae607d72f85d7021bb7470f19';
+            } else if (network == 'stagenet') {
+              hash = '48734337ca1bd5a21dd46ac67307af9a18ea838041c85efc0d0ecc91fc285006';
+            }
+
+            daemonRPC.getblockheaderbyhash(hash)
             .then(result => {
               result.should.be.a.Object();
               result.status.should.be.a.String();
@@ -181,15 +219,28 @@ describe('daemonRPC constructor', () => {
         });
 
         describe('getblockheaderbyheight()', () => {
-          it('should return block 1234567\'s header', done => {
-            daemonRPC.getblockheaderbyheight(1234567)
+          let height = 0;
+          let hash = '';
+          if (network == 'mainnet') {
+            height = 1234567;
+            hash = 'f093439d0dd48010a22fdb615a659e22738a10991871b5dc2335efa69008a8cd';
+          } else if (network == 'testnet') {
+            height = 123456;
+            hash = 'aaaac8fe6bd05f32aa68b9bd13d66d2056335a1a4a88c788f7a07ab8a1e64912';
+          } else if (network == 'stagenet') {
+            height = 12345;
+            hash = '43dc0db57bfa5fbfe55c872944697cb8c8570fe12da9228e8c253e9ca16cdf2c';
+          }
+
+          it(`should return block ${height}'s header`, done => {
+            daemonRPC.getblockheaderbyheight(height)
             .then(result => {
               result.should.be.a.Object();
               result.status.should.be.a.String();
               result.status.should.be.equal('OK');
               result.block_header.should.be.a.Object();
               result.block_header.hash.should.be.a.String();
-              result.block_header.hash.should.be.equal('f093439d0dd48010a22fdb615a659e22738a10991871b5dc2335efa69008a8cd');
+              result.block_header.hash.should.be.equal(hash);
               result.block_header.nonce.should.be.a.Number();
             })
             .then(done, done);
@@ -198,7 +249,16 @@ describe('daemonRPC constructor', () => {
 
         describe('getblock_by_hash()', () => {
           it('should return block 101010', done => {
-            daemonRPC.getblock_by_hash('5ab00b5f78f731a64ace5558c909cf2d74021d41218021806845197107c6709a')
+            let hash = '';
+            if (network == 'mainnet') {
+              hash = '5ab00b5f78f731a64ace5558c909cf2d74021d41218021806845197107c6709a';
+            } else if (network == 'testnet') {
+              hash = '5366843859002d2529fdf9e220be4e67e89ae5406f3effebe4b4ba6872700778';
+            } else if (network == 'stagenet') {
+              hash = '6dee4fedc89d31ac93302fe7732010e2d12445756808855450c57ee59f853b0d';
+            }
+
+            daemonRPC.getblock_by_hash(hash)
             .then(result => {
               result.should.be.a.Object();
               result.status.should.be.a.String();
@@ -214,16 +274,25 @@ describe('daemonRPC constructor', () => {
         });
 
         describe('getblock_by_height()', () => {
-          it('should return block 202020', done => {
-            daemonRPC.getblock_by_height(202020)
+          it('should return block 20202', done => {
+            daemonRPC.getblock_by_height(20202)
             .then(result => {
+              let hash = '';
+              if (network == 'mainnet') {
+                hash = 'b137c1d3f3a120635f4824b1f2584571cd9c6d702eba778749d99bce126a244b';
+              } else if (network == 'testnet') {
+                hash = 'bd56249118d28c35d81195ab7d946ee2648989b32d7902367681266f68db3e92';
+              } else if (network == 'stagenet') {
+                hash = '6db64a6a8d05e76ce033ccf89320755115b631e512a82dab35f9eefc287c3155';
+              }
+
               result.should.be.a.Object();
               result.status.should.be.a.String();
               result.status.should.be.equal('OK');
               result.blob.should.be.a.String();
               result.block_header.should.be.a.Object();
               result.block_header.hash.should.be.a.String();
-              result.block_header.hash.should.be.equal('e262d0b6cdae7dabae5e30e4226f70c34254674b8b56b7d992377c4faca67024');
+              result.block_header.hash.should.be.equal(hash);
               result.block_header.nonce.should.be.a.Number();
             })
             .then(done, done);
@@ -282,11 +351,11 @@ describe('daemonRPC constructor', () => {
           it('should get node\'s current height', done => {
             daemonRPC.getheight()
             .then(result => {
-              result.should.be.a.String();
-              JSON.parse(result).status.should.be.a.String();
-              JSON.parse(result).status.should.be.equal('OK');
-              JSON.parse(result).should.be.a.Object();
-              JSON.parse(result).height.should.be.a.Number();
+              result.should.be.a.Object();
+              result.status.should.be.a.String();
+              result.status.should.be.equal('OK');
+              result.should.be.a.Object();
+              result.height.should.be.a.Number();
             })
             .then(done, done);
           });
@@ -294,7 +363,16 @@ describe('daemonRPC constructor', () => {
 
         describe('gettransactions()', () => {
           it('should get transaction info', done => {
-            daemonRPC.gettransactions(['99a992675f1204ea114e1ad14f2e622554f46b3a9cacc91c6255b789906269d5'])
+            let txid = '';
+            if (network == 'mainnet') {
+              txid = '99a992675f1204ea114e1ad14f2e622554f46b3a9cacc91c6255b789906269d5';
+            } else if (network == 'testnet') {
+              txid = '0f9be746e4112bc94ad281ab354f5b383e4f13a3d12bf27c39fc24339a8298a6';
+            } else if (network == 'stagenet') {
+              txid = '8da67f5a0c0a32f04b457911a5d47cd65922fe2d077d481cba261c866e0b3b4f';
+            }
+
+            daemonRPC.gettransactions([txid])
             .then(result => {
               result.should.be.a.Object();
               result.status.should.be.a.String();
@@ -312,12 +390,11 @@ describe('daemonRPC constructor', () => {
           it('should get orphaned block hashes', done => {
             daemonRPC.get_alt_blocks_hashes()
             .then(result => {
-              result.should.be.a.String();
-              JSON.parse(result).should.be.a.Object();
-              JSON.parse(result).status.should.be.a.String();
-              JSON.parse(result).status.should.be.equal('OK');
-              if ('blks_hashes' in JSON.parse(result)) {
-                JSON.parse(result).blks_hashes.should.be.a.Array();
+              result.should.be.a.Object();
+              result.status.should.be.a.String();
+              result.status.should.be.equal('OK');
+              if ('blks_hashes' in result) {
+                result.blks_hashes.should.be.a.Array();
               }
             })
             .then(done, done);
@@ -333,7 +410,10 @@ describe('daemonRPC constructor', () => {
               result.status.should.be.equal('OK');
               result.spent_status.should.be.a.Array();
               result.spent_status[0].should.be.a.Number();
-              result.spent_status[0].should.be.equal(1);
+              // TODO handle testnet and stagenet key images
+              if (network == 'mainnet') {
+                result.spent_status[0].should.be.equal(1);
+              }
             })
             .then(done, done);
           });
@@ -353,12 +433,10 @@ describe('daemonRPC constructor', () => {
           it('should get transaction pool info', done => {
             daemonRPC.get_transaction_pool()
             .then(result => {
-              result.should.be.a.String();
-              // TODO parse JSON
-              // JSON.parse(result).should.be.a.Object();
-              // JSON.parse(result).status.should.be.a.String();
-              // JSON.parse(result).status.should.be.equal('OK');
-              // JSON.parse(result).key.should.be.a.String();
+              result.should.be.a.Object();
+              result.should.be.a.Object();
+              result.status.should.be.a.String();
+              result.status.should.be.equal('OK');
             })
             .then(done, done);
           });
@@ -368,14 +446,12 @@ describe('daemonRPC constructor', () => {
           it('should get transaction pool stats', done => {
             daemonRPC.get_transaction_pool_stats()
             .then(result => {
-              result.should.be.a.String();
-              // TODO parse JSON
-              // JSON.parse(result).should.be.a.Object();
-              // JSON.parse(result).status.should.be.a.String();
-              // JSON.parse(result).status.should.be.equal('OK');
-              // JSON.parse(result).pool_stats.should.be.a.Object();
-              // JSON.parse(result).pool_stats.txs_total.should.be.a.Number();
-              // JSON.parse(result).pool_stats.histo.should.be.a.String();
+              result.should.be.a.Object();
+              result.should.be.a.Object();
+              result.status.should.be.a.String();
+              result.status.should.be.equal('OK');
+              result.pool_stats.should.be.a.Object();
+              result.pool_stats.txs_total.should.be.a.Number();
             })
             .then(done, done);
           });
@@ -400,10 +476,10 @@ describe('daemonRPC constructor', () => {
           it('should get daemon bandwidth limits', done => {
             daemonRPC.get_limit()
             .then(result => {
-              JSON.parse(result).should.be.a.Object();
-              JSON.parse(result).status.should.be.a.String();
-              JSON.parse(result).status.should.be.equal('OK');
-              JSON.parse(result).limit_down.should.be.a.Number();
+              result.should.be.a.Object();
+              result.status.should.be.a.String();
+              result.status.should.be.equal('OK');
+              result.limit_down.should.be.a.Number();
             })
             .then(done, done);
           });
@@ -414,10 +490,10 @@ describe('daemonRPC constructor', () => {
           it('should set daemon bandwidth limits', done => {
             daemonRPC.set_limit(-1, -1)
             .then(result => {
-              JSON.parse(result).should.be.a.Object();
-              JSON.parse(result).status.should.be.a.String();
-              JSON.parse(result).status.should.be.equal('OK');
-              JSON.parse(result).limit_down.should.be.a.Number();
+              result.should.be.a.Object();
+              result.status.should.be.a.String();
+              result.status.should.be.equal('OK');
+              result.limit_down.should.be.a.Number();
             })
             .then(done, done);
           });
@@ -428,9 +504,9 @@ describe('daemonRPC constructor', () => {
           it('should set maximum number of outgoing peers', done => {
             daemonRPC.out_peers(10000)
             .then(result => {
-              JSON.parse(result).should.be.a.Object();
-              JSON.parse(result).status.should.be.a.String();
-              JSON.parse(result).status.should.be.equal('OK');
+              result.should.be.a.Object();
+              result.status.should.be.a.String();
+              result.status.should.be.equal('OK');
             })
             .then(done, done);
           });
@@ -441,9 +517,9 @@ describe('daemonRPC constructor', () => {
           it('should set maximum number of incoming peers', done => {
             daemonRPC.in_peers(10000)
             .then(result => {
-              JSON.parse(result).should.be.a.Object();
-              JSON.parse(result).status.should.be.a.String();
-              JSON.parse(result).status.should.be.equal('OK');
+              result.should.be.a.Object();
+              result.status.should.be.a.String();
+              result.status.should.be.equal('OK');
             })
             .then(done, done);
           });
@@ -470,8 +546,8 @@ describe('daemonRPC constructor', () => {
         //   it('should stop the daemon', done => {
         //     daemonRPC.stop_daemon()
         //     .then(result => {
-        //       JSON.parse(result).should.be.a.Object();
-        //       JSON.parse(result).status.should.be.equal('OK');
+        //       result.should.be.a.Object();
+        //       result.status.should.be.equal('OK');
 
         //       // TODO restart daemon
         //     })
