@@ -520,7 +520,24 @@ describe('daemonRPC constructor', () => {
             });
           });
 
-          // TODO test get_peer_list
+          describe('get_peer_list()', () => {
+            it('should get peer list', done => {
+              daemonRPC.get_peer_list()
+              .then(result => {
+                result.should.be.a.Object();
+                result.status.should.be.a.String();
+                result.status.should.be.equal('OK');
+                result.gray_list.should.be.a.Array();
+                result.gray_list[0].should.be.a.Object();
+                result.gray_list[0].id.should.be.a.Number();
+                result.white_list.should.be.a.Array();
+                result.white_list[0].should.be.a.Object();
+                result.white_list[0].id.should.be.a.Number();
+              })
+              .then(done, done);
+            });
+          });
+
           // TODO test set_log_hash_rate
           // TODO test set_log_level
           // TODO test set_log_categories
