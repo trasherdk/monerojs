@@ -1,29 +1,31 @@
 'use strict';
 var Monero = require('../index.js');
 
-describe('remote nodes', () => {
-  const daemons = require('../lib/remote-daemons.json');
+// TODO do not test block heights over max block height of current network/node
 
-  for (let network in daemons) {
-    for (let i in daemons[network]) {
-      // TODO time each connection; store fastest for use later
-      let daemon = daemons[network][i];
+// describe('remote nodes', () => {
+//   const daemons = require('../lib/remote-daemons.json');
 
-      it(`should connect to ${network} daemon at ${daemon['hostname']}`, done => {
-        let daemonRPC = new Monero.daemonRPC(daemon) // Check if remote daemon is available
-        .then(daemon => {
-          daemon.should.be.a.Object();
-          // daemon available
-        })
-        .catch(err => {
-          // daemon unavailable
-        })
-        .then(done, done);
-      })
-      .timeout(5000);
-    }
-  }
-});
+//   for (let network in daemons) {
+//     for (let i in daemons[network]) {
+//       // TODO time each connection; store fastest for use later
+//       let daemon = daemons[network][i];
+
+//       it(`should connect to ${network} daemon at ${daemon['hostname']}`, done => {
+//         let daemonRPC = new Monero.daemonRPC(daemon) // Check if remote daemon is available
+//         .then(daemon => {
+//           daemon.should.be.a.Object();
+//           // daemon available
+//         })
+//         .catch(err => {
+//           // daemon unavailable
+//         })
+//         .then(done, done);
+//       })
+//       .timeout(5000);
+//     }
+//   }
+// });
 
 describe('daemonRPC constructor', () => {
   // TODO test one at a time?
@@ -506,7 +508,18 @@ describe('daemonRPC constructor', () => {
             });
           });
 
-          // TODO test save_bc
+          describe('save_bc()', () => {
+            it('should save blockchain', done => {
+              daemonRPC.save_bc()
+              .then(result => {
+                result.should.be.a.Object();
+                result.status.should.be.a.String();
+                result.status.should.be.equal('OK');
+              })
+              .then(done, done);
+            });
+          });
+
           // TODO test get_peer_list
           // TODO test set_log_hash_rate
           // TODO test set_log_level
