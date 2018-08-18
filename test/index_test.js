@@ -124,21 +124,20 @@ describe('daemonRPC constructor', () => {
         });
 
         describe('on_getblockhash()', () => {
+          let hash = '';
+          if (network == 'mainnet') {
+            hash = '4aff3d3f2a939ddf7c971b57b428841bccde6dc937404346398c4133ba37359b';
+          } else if (network == 'testnet') {
+            hash = '695d716a064ddd9e7b46e7f1fb5dc78285dd8c37ac91b5801e5f32f230bc7f1f';
+          } else if (network == 'stagenet') {
+            hash = 'e5e89dc38d1ed8de28f573fdcdffb95c0d6dd9ce5f49a4edc78c88a4cafe66ca';
+          }
+
           it('should return the block 42069\'s hash', done => {
             daemonRPC.on_getblockhash(42069)
             .then(result => {
               // Why no status string?
               result.should.be.a.String();
-
-              let hash = '';
-              if (network == 'mainnet') {
-                hash = '4aff3d3f2a939ddf7c971b57b428841bccde6dc937404346398c4133ba37359b';
-              } else if (network == 'testnet') {
-                hash = '695d716a064ddd9e7b46e7f1fb5dc78285dd8c37ac91b5801e5f32f230bc7f1f';
-              } else if (network == 'stagenet') {
-                hash = 'e5e89dc38d1ed8de28f573fdcdffb95c0d6dd9ce5f49a4edc78c88a4cafe66ca';
-              }
-
               result.should.be.equal(hash);
             })
             .then(done, done);
@@ -146,16 +145,16 @@ describe('daemonRPC constructor', () => {
         });
 
         describe('getblocktemplate()', () => {
-          it('should return a block template', done => {
-            let address = '';
-            if (network == 'mainnet') {
-              address = '44AFFq5kSiGBoZ4NMDwYtN18obc8AemS33DBLWs3H7otXft3XjrpDtQGv7SqSsaBYBb98uNbr2VBBEt7f2wfn3RVGQBEP3A';
-            } else if (network == 'testnet') {
-              address = '9sykYqd8soGa9Fv8zDMdt2gN8z2Aj5qQeBNpXjxRowkyCoWCYxa3xumYQe5MmQJuFN5CVTQwK2gqtfBNsFqa16gp1L4uGBU';
-            } else if (network == 'stagenet') {
-              address = '56Gpz2CeLbq1KT6eTHCqH43StT8kh7WQs9ji8wmECS7WUAx85FHrRztebp48wgEt6kcRbTpvBhnktEyDHVhe7xjbTAzALiY';
-            }
+          let address = '';
+          if (network == 'mainnet') {
+            address = '44AFFq5kSiGBoZ4NMDwYtN18obc8AemS33DBLWs3H7otXft3XjrpDtQGv7SqSsaBYBb98uNbr2VBBEt7f2wfn3RVGQBEP3A';
+          } else if (network == 'testnet') {
+            address = '9sykYqd8soGa9Fv8zDMdt2gN8z2Aj5qQeBNpXjxRowkyCoWCYxa3xumYQe5MmQJuFN5CVTQwK2gqtfBNsFqa16gp1L4uGBU';
+          } else if (network == 'stagenet') {
+            address = '56Gpz2CeLbq1KT6eTHCqH43StT8kh7WQs9ji8wmECS7WUAx85FHrRztebp48wgEt6kcRbTpvBhnktEyDHVhe7xjbTAzALiY';
+          }
 
+          it('should return a block template', done => {
             daemonRPC.getblocktemplate(address, 255)
             .then(result => {
               if (result.hasOwnProperty('error')) {
@@ -194,16 +193,16 @@ describe('daemonRPC constructor', () => {
         });
 
         describe('getblockheaderbyhash()', () => {
-          it('should return block 31337\'s header', done => {
-            let hash = '';
-            if (network == 'mainnet') {
-              hash = '3b380d7dac4fe41864fe2fc4b7ef7b2e70575d4d847d1f590550b88dc2e9fdf9';
-            } else if (network == 'testnet') {
-              hash = '3fd46824b2a1143b72fcb1eed9294c817ab37a3ae607d72f85d7021bb7470f19';
-            } else if (network == 'stagenet') {
-              hash = '48734337ca1bd5a21dd46ac67307af9a18ea838041c85efc0d0ecc91fc285006';
-            }
+          let hash = '';
+          if (network == 'mainnet') {
+            hash = '3b380d7dac4fe41864fe2fc4b7ef7b2e70575d4d847d1f590550b88dc2e9fdf9';
+          } else if (network == 'testnet') {
+            hash = '3fd46824b2a1143b72fcb1eed9294c817ab37a3ae607d72f85d7021bb7470f19';
+          } else if (network == 'stagenet') {
+            hash = '48734337ca1bd5a21dd46ac67307af9a18ea838041c85efc0d0ecc91fc285006';
+          }
 
+          it('should return block 31337\'s header', done => {
             daemonRPC.getblockheaderbyhash(hash)
             .then(result => {
               result.should.be.a.Object();
@@ -248,16 +247,16 @@ describe('daemonRPC constructor', () => {
         });
 
         describe('getblock_by_hash()', () => {
-          it('should return block 101010', done => {
-            let hash = '';
-            if (network == 'mainnet') {
-              hash = '5ab00b5f78f731a64ace5558c909cf2d74021d41218021806845197107c6709a';
-            } else if (network == 'testnet') {
-              hash = '5366843859002d2529fdf9e220be4e67e89ae5406f3effebe4b4ba6872700778';
-            } else if (network == 'stagenet') {
-              hash = '6dee4fedc89d31ac93302fe7732010e2d12445756808855450c57ee59f853b0d';
-            }
+          let hash = '';
+          if (network == 'mainnet') {
+            hash = '5ab00b5f78f731a64ace5558c909cf2d74021d41218021806845197107c6709a';
+          } else if (network == 'testnet') {
+            hash = '5366843859002d2529fdf9e220be4e67e89ae5406f3effebe4b4ba6872700778';
+          } else if (network == 'stagenet') {
+            hash = '6dee4fedc89d31ac93302fe7732010e2d12445756808855450c57ee59f853b0d';
+          }
 
+          it('should return block 101010', done => {
             daemonRPC.getblock_by_hash(hash)
             .then(result => {
               result.should.be.a.Object();
@@ -274,18 +273,18 @@ describe('daemonRPC constructor', () => {
         });
 
         describe('getblock_by_height()', () => {
+          let hash = '';
+          if (network == 'mainnet') {
+            hash = 'b137c1d3f3a120635f4824b1f2584571cd9c6d702eba778749d99bce126a244b';
+          } else if (network == 'testnet') {
+            hash = 'bd56249118d28c35d81195ab7d946ee2648989b32d7902367681266f68db3e92';
+          } else if (network == 'stagenet') {
+            hash = '6db64a6a8d05e76ce033ccf89320755115b631e512a82dab35f9eefc287c3155';
+          }
+
           it('should return block 20202', done => {
             daemonRPC.getblock_by_height(20202)
             .then(result => {
-              let hash = '';
-              if (network == 'mainnet') {
-                hash = 'b137c1d3f3a120635f4824b1f2584571cd9c6d702eba778749d99bce126a244b';
-              } else if (network == 'testnet') {
-                hash = 'bd56249118d28c35d81195ab7d946ee2648989b32d7902367681266f68db3e92';
-              } else if (network == 'stagenet') {
-                hash = '6db64a6a8d05e76ce033ccf89320755115b631e512a82dab35f9eefc287c3155';
-              }
-
               result.should.be.a.Object();
               result.status.should.be.a.String();
               result.status.should.be.equal('OK');
@@ -298,25 +297,6 @@ describe('daemonRPC constructor', () => {
             .then(done, done);
           });
         });
-
-        // TODO test get_connections if connected to local node
-        // describe('get_connections()', () => {
-        //   it('should get remote daemon connections', done => {
-        //     daemonRPC.get_connections()
-        //     .then(result => {
-        //       result.should.be.a.Object();
-        //       result.status.should.be.a.String();
-        //       result.status.should.be.equal('OK');
-        //       console.log(result)
-        //       // result.blob.should.be.a.String();
-        //       // result.block_header.should.be.a.Object();
-        //       // result.block_header.hash.should.be.a.String();
-        //       // result.block_header.hash.should.be.equal('e262d0b6cdae7dabae5e30e4226f70c34254674b8b56b7d992377c4faca67024');
-        //       // result.block_header.nonce.should.be.a.Number();
-        //     })
-        //     .then(done, done);
-        //   });
-        // });
 
         describe('get_outs()', () => {
           it('should get output info', done => {
@@ -362,16 +342,16 @@ describe('daemonRPC constructor', () => {
         });
 
         describe('gettransactions()', () => {
-          it('should get transaction info', done => {
-            let txid = '';
-            if (network == 'mainnet') {
-              txid = '99a992675f1204ea114e1ad14f2e622554f46b3a9cacc91c6255b789906269d5';
-            } else if (network == 'testnet') {
-              txid = '0f9be746e4112bc94ad281ab354f5b383e4f13a3d12bf27c39fc24339a8298a6';
-            } else if (network == 'stagenet') {
-              txid = '8da67f5a0c0a32f04b457911a5d47cd65922fe2d077d481cba261c866e0b3b4f';
-            }
+          let txid = '';
+          if (network == 'mainnet') {
+            txid = '99a992675f1204ea114e1ad14f2e622554f46b3a9cacc91c6255b789906269d5';
+          } else if (network == 'testnet') {
+            txid = '0f9be746e4112bc94ad281ab354f5b383e4f13a3d12bf27c39fc24339a8298a6';
+          } else if (network == 'stagenet') {
+            txid = '8da67f5a0c0a32f04b457911a5d47cd65922fe2d077d481cba261c866e0b3b4f';
+          }
 
+          it('should get transaction info', done => {
             daemonRPC.gettransactions([txid])
             .then(result => {
               result.should.be.a.Object();
@@ -471,59 +451,73 @@ describe('daemonRPC constructor', () => {
           });
         });
 
-        // TODO only test on local daemon
-        describe('get_limit()', () => {
-          it('should get daemon bandwidth limits', done => {
-            daemonRPC.get_limit()
-            .then(result => {
-              result.should.be.a.Object();
-              result.status.should.be.a.String();
-              result.status.should.be.equal('OK');
-              result.limit_down.should.be.a.Number();
-            })
-            .then(done, done);
+        if (daemonRPC['local']) { // Only run the following tests on a local daemon
+          describe('get_connections()', () => {
+            it('should get remote daemon connections', done => {
+              daemonRPC.get_connections()
+              .then(result => {
+                result.should.be.a.Object();
+                result.status.should.be.a.String();
+                result.status.should.be.equal('OK');
+                result.connections.should.be.a.Array();
+                result.connections[0].should.be.a.Object();
+                result.connections[0].address.should.be.a.String();
+                result.connections[0].height.should.be.a.Number();
+              })
+              .then(done, done);
+            });
           });
-        });
 
-        // TODO only test on local daemon
-        describe('set_limit()', () => {
-          it('should set daemon bandwidth limits', done => {
-            daemonRPC.set_limit(-1, -1)
-            .then(result => {
-              result.should.be.a.Object();
-              result.status.should.be.a.String();
-              result.status.should.be.equal('OK');
-              result.limit_down.should.be.a.Number();
-            })
-            .then(done, done);
+          describe('get_limit()', () => {
+            it('should get daemon bandwidth limits', done => {
+              daemonRPC.get_limit()
+              .then(result => {
+                result.should.be.a.Object();
+                result.status.should.be.a.String();
+                result.status.should.be.equal('OK');
+                result.limit_down.should.be.a.Number();
+              })
+              .then(done, done);
+            });
           });
-        });
 
-        // TODO only test on local daemon
-        describe('out_peers()', () => {
-          it('should set maximum number of outgoing peers', done => {
-            daemonRPC.out_peers(10000)
-            .then(result => {
-              result.should.be.a.Object();
-              result.status.should.be.a.String();
-              result.status.should.be.equal('OK');
-            })
-            .then(done, done);
+          describe('set_limit()', () => {
+            it('should set daemon bandwidth limits', done => {
+              daemonRPC.set_limit(-1, -1)
+              .then(result => {
+                result.should.be.a.Object();
+                result.status.should.be.a.String();
+                result.status.should.be.equal('OK');
+                result.limit_down.should.be.a.Number();
+              })
+              .then(done, done);
+            });
           });
-        });
 
-        // TODO only test on local daemon
-        describe('in_peers()', () => {
-          it('should set maximum number of incoming peers', done => {
-            daemonRPC.in_peers(10000)
-            .then(result => {
-              result.should.be.a.Object();
-              result.status.should.be.a.String();
-              result.status.should.be.equal('OK');
-            })
-            .then(done, done);
+          describe('out_peers()', () => {
+            it('should set maximum number of outgoing peers', done => {
+              daemonRPC.out_peers(10000)
+              .then(result => {
+                result.should.be.a.Object();
+                result.status.should.be.a.String();
+                result.status.should.be.equal('OK');
+              })
+              .then(done, done);
+            });
           });
-        });
+
+          describe('in_peers()', () => {
+            it('should set maximum number of incoming peers', done => {
+              daemonRPC.in_peers(10000)
+              .then(result => {
+                result.should.be.a.Object();
+                result.status.should.be.a.String();
+                result.status.should.be.equal('OK');
+              })
+              .then(done, done);
+            });
+          });
+        }
 
         describe('get_outs()', () => {
           it('should get output info', done => {
@@ -538,22 +532,22 @@ describe('daemonRPC constructor', () => {
             })
             .then(done, done);
           });
+
+          // // Make sure to test stop_daemon() last
+          // // TODO only test on local daemon
+          // describe('stop_daemon()', () => {
+          //   it('should stop the daemon', done => {
+          //     daemonRPC.stop_daemon()
+          //     .then(result => {
+          //       result.should.be.a.Object();
+          //       result.status.should.be.equal('OK');
+
+          //       // TODO restart daemon
+          //     })
+          //     .then(done, done);
+          //   });
+          // });
         });
-
-        // // Make sure to test stop_daemon() last
-        // // TODO only test on local daemon
-        // describe('stop_daemon()', () => {
-        //   it('should stop the daemon', done => {
-        //     daemonRPC.stop_daemon()
-        //     .then(result => {
-        //       result.should.be.a.Object();
-        //       result.status.should.be.equal('OK');
-
-        //       // TODO restart daemon
-        //     })
-        //     .then(done, done);
-        //   });
-        // });
       });
     })
     .catch(error => {
