@@ -400,14 +400,6 @@ describe('daemonRPC constructor', () => {
         });
 
         // TODO test send_raw_transaction
-        // TODO test start_mining
-        // TODO test stop_mining
-        // TODO test mining_status
-        // TODO test save_bc
-        // TODO test get_peer_list
-        // TODO test set_log_hash_rate
-        // TODO test set_log_level
-        // TODO test set_log_categories
 
         describe('get_transaction_pool()', () => {
           it('should get transaction pool info', done => {
@@ -467,6 +459,58 @@ describe('daemonRPC constructor', () => {
               .then(done, done);
             });
           });
+
+          describe('start_mining()', () => {
+            let address = '';
+            if (network == 'mainnet') {
+              address = '44AFFq5kSiGBoZ4NMDwYtN18obc8AemS33DBLWs3H7otXft3XjrpDtQGv7SqSsaBYBb98uNbr2VBBEt7f2wfn3RVGQBEP3A';
+            } else if (network == 'testnet') {
+              address = '9sykYqd8soGa9Fv8zDMdt2gN8z2Aj5qQeBNpXjxRowkyCoWCYxa3xumYQe5MmQJuFN5CVTQwK2gqtfBNsFqa16gp1L4uGBU';
+            } else if (network == 'stagenet') {
+              address = '56Gpz2CeLbq1KT6eTHCqH43StT8kh7WQs9ji8wmECS7WUAx85FHrRztebp48wgEt6kcRbTpvBhnktEyDHVhe7xjbTAzALiY';
+            }
+
+            it('should start mining', done => {
+              daemonRPC.start_mining(false, false, address, 2)
+              .then(result => {
+                result.should.be.a.Object();
+                result.status.should.be.a.String();
+                result.status.should.be.equal('OK');
+              })
+              .then(done, done);
+            });
+          });
+
+          describe('mining_status()', () => {
+            it('should stop mining', done => {
+              daemonRPC.mining_status()
+              .then(result => {
+                result.should.be.a.Object();
+                result.status.should.be.a.String();
+                result.status.should.be.equal('OK');
+                result.speed.should.be.a.Number();
+              })
+              .then(done, done);
+            });
+          });
+
+          describe('stop_mining()', () => {
+            it('should stop mining', done => {
+              daemonRPC.stop_mining()
+              .then(result => {
+                result.should.be.a.Object();
+                result.status.should.be.a.String();
+                result.status.should.be.equal('OK');
+              })
+              .then(done, done);
+            });
+          });
+
+          // TODO test save_bc
+          // TODO test get_peer_list
+          // TODO test set_log_hash_rate
+          // TODO test set_log_level
+          // TODO test set_log_categories
 
           describe('get_limit()', () => {
             it('should get daemon bandwidth limits', done => {
