@@ -3,57 +3,68 @@
     {
       "hostname": "ushouldrunyourownnode.moneroworld.com",
       "port": 18089,
-      "protocol": "http"
+      "protocol": "http",
+      "remote": true
     },
     {
       "hostname": "opennode.xmr-tw.org",
       "port": 18089,
-      "protocol": "http"
+      "protocol": "http",
+      "remote": true
     },
     {
       "hostname": "geo.node.moneroworld.com",
       "port": 18089,
-      "protocol": "http"
+      "protocol": "http",
+      "remote": true
     },
     {
       "hostname": "node.moneroworld.com",
       "port": 18089,
-      "protocol": "http"
+      "protocol": "http",
+      "remote": true
     },
     {
       "hostname": "node.xmrbackb.one",
       "port": 18081,
-      "protocol": "http"
+      "protocol": "http",
+      "remote": true
     },
     {
       "hostname": "node.viaxmr.com ",
       "port": 18081,
-      "protocol": "http"
+      "protocol": "http",
+      "remote": true
     },
     {
       "hostname": "geo.node.moneroworld.com",
       "port": 18089,
-      "protocol": "http"
+      "protocol": "http",
+      "remote": true
     },
     {
       "hostname": "af.node.moneroworld.com",
       "port": 18089,
-      "protocol": "http"
+      "protocol": "http",
+      "remote": true
     },
     {
       "hostname": "na.node.moneroworld.com",
       "port": 18089,
-      "protocol": "http"
+      "protocol": "http",
+      "remote": true
     },
     {
       "hostname": "eu.node.moneroworld.com",
       "port": 18089,
-      "protocol": "http"
+      "protocol": "http",
+      "remote": true
     },
     {
       "hostname": "oc.node.moneroworld.com",
       "port": 18089,
-      "protocol": "http"
+      "protocol": "http",
+      "remote": true
     }
   ],
   "testnet": [],

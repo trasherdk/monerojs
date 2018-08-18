@@ -3,36 +3,42 @@
     {
       "hostname": "127.0.0.1",
       "port": 18081,
-      "protocol": "http"
+      "protocol": "http",
+      "local": true
     },
     {
       "hostname": "127.0.0.1",
       "port": 18089,
-      "protocol": "http"
+      "protocol": "http",
+      "local": true
     }
   ],
   "testnet": [
     {
       "hostname": "127.0.0.1",
       "port": 28081,
-      "protocol": "http"
+      "protocol": "http",
+      "local": true
     },
     {
       "hostname": "127.0.0.1",
       "port": 28089,
-      "protocol": "http"
+      "protocol": "http",
+      "local": true
     }
   ],
   "stagenet": [
     {
       "hostname": "127.0.0.1",
       "port": 38081,
-      "protocol": "http"
+      "protocol": "http",
+      "local": true
     },
     {
       "hostname": "127.0.0.1",
       "port": 38089,
-      "protocol": "http"
+      "protocol": "http",
+      "local": true
     }
   ]
 }
