@@ -3,8 +3,6 @@ var Monero = require('../index.js');
 
 let network = 'testnet'; // Network to test
 
-// TODO do not test block heights over max block height of current network/node
-/*
 describe('remote nodes', () => {
   const daemons = require('../lib/remote-daemons.json');
 
@@ -220,7 +218,7 @@ describe('daemonRPC constructor', () => {
         });
 
         describe('getblockheaderbyheight()', () => {
-          let height = 0;
+          let height = 0; // TODO do not test block heights over max block height of current network/node
           let hash = '';
           if (network == 'mainnet') {
             height = 1234567;
@@ -701,7 +699,7 @@ describe('daemonRPC constructor', () => {
   })
   .timeout(5000);
 });
-*/
+
 describe('walletRPC constructor', () => {
   it('should connect to wallet', done => {
     var walletRPC = new Monero.walletRPC({ autoconnect: true, network: network, initialize: false })
@@ -722,9 +720,6 @@ describe('walletRPC constructor', () => {
                     result.error.code.should.be.equal(-21);
                   }
                 }
-              } else {
-                result.status.should.be.a.String();
-                result.status.should.be.equal('OK');
               }
             })
             .then(done, done);
@@ -838,9 +833,19 @@ describe('walletRPC constructor', () => {
           });
         });
 
+        describe('set_account_tag_description()', () => {
+          it('should add a description to the wallet account tag', done => {
+            walletRPC.set_account_tag_description('monerojs unit test suite account tag', 'monerojs unit test suite account tag description')
+            .then(result => {
+              result.should.be.a.Object();
+            })
+            .then(done, done);
+          });
+        });
+
         describe('get_account_tags()', () => {
           it('should get account tags', done => {
-            walletRPC.get_account_tags(1)
+            walletRPC.get_account_tags()
             .then(result => {
               result.should.be.a.Object();
               result.account_tags.should.be.a.Array();
@@ -852,16 +857,6 @@ describe('walletRPC constructor', () => {
         describe('untag_accounts()', () => {
           it('should untag wallet account', done => {
             walletRPC.tag_accounts([account_index])
-            .then(result => {
-              result.should.be.a.Object();
-            })
-            .then(done, done);
-          });
-        });
-
-        describe('set_account_tag_description()', () => {
-          it('should add a description to the wallet account tag', done => {
-            walletRPC.set_account_tag_description('monerojs unit test suite account tag', 'monerojs unit test suite account tag description')
             .then(result => {
               result.should.be.a.Object();
             })
@@ -887,7 +882,17 @@ describe('walletRPC constructor', () => {
         // TODO sweep_all
         // TODO sweep_single
         // TODO relay_tx
-        // TODO store
+
+        describe('store()', () => {
+          it('should save wallet', done => {
+            walletRPC.store()
+            .then(result => {
+              result.should.be.a.Object();
+            })
+            .then(done, done);
+          });
+        });
+
         // TODO get_payments
         // TODO get_bulk_payments
         // TODO incoming_transfers
@@ -1135,7 +1140,7 @@ describe('walletRPC constructor', () => {
 
         describe('start_mining()', () => {
           it('should start mining', done => {
-            walletRPC.start_mining(false, false, address, 2)
+            walletRPC.start_mining(2, false, false)
             .then(result => {
               result.should.be.a.Object();
             })
