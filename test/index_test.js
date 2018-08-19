@@ -752,12 +752,15 @@ describe('walletRPC constructor', () => {
           });
         });
 
+        let address = '';
+
         describe('getaddress()', () => {
           it('should return the account address', done => {
             walletRPC.getaddress()
             .then(result => {
               result.should.be.a.Object();
               result.address.should.be.a.String();
+              address = result.address;
             })
             .then(done, done);
           });
@@ -877,6 +880,18 @@ describe('walletRPC constructor', () => {
           });
         });
 
+        // TODO transfer
+        // TODO transfer_split
+        // TODO sweep_dust
+        // TODO sweep_unmixable
+        // TODO sweep_all
+        // TODO sweep_single
+        // TODO relay_tx
+        // TODO store
+        // TODO get_payments
+        // TODO get_bulk_payments
+        // TODO incoming_transfers
+
         describe('query_key()', () => {
           it('should get wallet view key', done => {
             walletRPC.query_key('view_key')
@@ -942,6 +957,266 @@ describe('walletRPC constructor', () => {
             .then(done, done);
           });
         });
+
+        let integrated_address = '';
+
+        describe('make_integrated_address()', () => {
+          it('should make integrated address', done => {
+            walletRPC.make_integrated_address('1020304050607080')
+            .then(result => {
+              result.should.be.a.Object();
+              result.payment_id.should.be.a.String();
+              result.payment_id.should.be.equal('1020304050607080');
+              result.integrated_address.should.be.a.String();
+              integrated_address = result.integrated_address;
+            })
+            .then(done, done);
+          });
+        });
+
+        describe('split_integrated_address()', () => {
+          it('should split integrated address', done => {
+            walletRPC.split_integrated_address(integrated_address)
+            .then(result => {
+              result.should.be.a.Object();
+              result.payment_id.should.be.a.String();
+              result.payment_id.should.be.equal('1020304050607080');
+            })
+            .then(done, done);
+          });
+        });
+
+        // TODO set_tx_notes
+        // TODO get_tx_notes
+
+        describe('set_attribute()', () => {
+          it('should set wallet attribute', done => {
+            walletRPC.set_attribute('ATTRIBUTE_DESCRIPTION', 'monerojs unit test suite wallet description')
+            .then(result => {
+              result.should.be.a.Object();
+            })
+            .then(done, done);
+          });
+        });
+
+        describe('get_attribute()', () => {
+          it('should get wallet attribute', done => {
+            walletRPC.get_attribute('ATTRIBUTE_DESCRIPTION')
+            .then(result => {
+              result.should.be.a.Object();
+              result.value.should.be.a.String();
+              result.value.should.be.equal('monerojs unit test suite wallet description');
+            })
+            .then(done, done);
+          });
+        });
+
+        // TODO get_tx_key
+        // TODO check_tx_key
+        // TODO get_tx_proof
+        // TODO check_tx_proof
+        // TODO get_spend_proof
+        // TODO check_spend_proof
+        // TODO get_reserve_proof
+        // TODO check_reserve_proof
+        // TODO get_transfers
+        // TODO get_transfer_by_txid
+
+        let signature = '';
+
+        describe('sign()', () => {
+          it('should sign message', done => {
+            walletRPC.sign('monerojs unit test suite message')
+            .then(result => {
+              result.should.be.a.Object();
+              result.signature.should.be.a.String();
+              signature = result.signature;
+              // TODO verify without relying upon JSON-RPC calls
+            })
+            .then(done, done);
+          });
+        });
+
+        // // TODO find out why this fails
+        // describe('verify()', () => {
+        //   it('should verify signed message', done => {
+        //     console.log(address, signature);
+        //     walletRPC.verify('monerojs unit test suite message', address, signature)
+        //     .then(result => {
+        //       result.should.be.a.Object();
+        //       result.good.should.be.a.Boolean();
+        //       result.good.should.be.equal(true);
+        //     })
+        //     .then(done, done);
+        //   });
+        // });
+
+        // TODO export_key_images
+        // TODO import_key_images
+
+        let uri = '';
+
+        describe('make_uri()', () => {
+          it('should make uri', done => {
+            walletRPC.make_uri(address, 0.123456789101, '1020304050607080', 'monerojs unit test suite', 'monerojs unit test suite uri')
+            .then(result => {
+              result.should.be.a.Object();
+              result.uri.should.be.a.String();
+              uri = result.uri;
+            })
+            .then(done, done);
+          });
+        });
+
+        describe('parse_uri()', () => {
+          it('should parse uri', done => {
+            walletRPC.parse_uri(uri)
+            .then(result => {
+              result.should.be.a.Object();
+              result.uri.should.be.a.Object();
+              result.uri.address.should.be.a.String();
+              result.uri.address.should.be.equal(address);
+              result.uri.amount.should.be.a.Number();
+              result.uri.amount.should.be.equal(123456789101);
+              result.uri.payment_id.should.be.a.String();
+              result.uri.payment_id.should.be.equal('1020304050607080');
+              result.uri.recipient_name.should.be.a.String();
+              result.uri.recipient_name.should.be.equal('monerojs unit test suite');
+              result.uri.tx_description.should.be.a.String();
+              result.uri.tx_description.should.be.equal('monerojs unit test suite uri');
+            })
+            .then(done, done);
+          });
+        });
+
+        let address_book_index = 0;
+
+        describe('add_address_book()', () => {
+          it('should add address to address book', done => {
+            walletRPC.add_address_book(address, '1020304050607080908070605040302010203040506070809080706050403020', 'monerojs unit test suite address book entry')
+            .then(result => {
+              result.should.be.a.Object();
+              result.index.should.be.a.Number();
+              address_book_index = result.index;
+            })
+            .then(done, done);
+          });
+        });
+
+        describe('get_address_book()', () => {
+          it('should get address book entry', done => {
+            walletRPC.get_address_book([address_book_index])
+            .then(result => {
+              result.should.be.a.Object();
+              result.entries.should.be.a.Array();
+              result.entries[0].should.be.a.Object();
+              result.entries[0].address.should.be.a.String();
+              result.entries[0].address.should.be.equal(address);
+              result.entries[0].description.should.be.a.String();
+              result.entries[0].description.should.be.equal('monerojs unit test suite address book entry');
+              result.entries[0].index.should.be.a.Number();
+              result.entries[0].index.should.be.equal(address_book_index);
+              result.entries[0].payment_id.should.be.a.String();
+              result.entries[0].payment_id.should.be.equal('1020304050607080908070605040302010203040506070809080706050403020');
+            })
+            .then(done, done);
+          });
+        });
+
+        describe('delete_address_book()', () => {
+          it('should delete address from address book', done => {
+            walletRPC.delete_address_book(address_book_index)
+            .then(result => {
+              result.should.be.a.Object();
+            })
+            .then(done, done);
+          });
+        });
+
+        describe('start_mining()', () => {
+          it('should start mining', done => {
+            walletRPC.start_mining(false, false, address, 2)
+            .then(result => {
+              result.should.be.a.Object();
+            })
+            .then(done, done);
+          });
+        });
+
+        describe('stop_mining()', () => {
+          it('should stop mining', done => {
+            walletRPC.stop_mining()
+            .then(result => {
+              result.should.be.a.Object();
+            })
+            .then(done, done);
+          });
+        });
+
+        describe('get_languages()', () => {
+          it('should get list of seed languages', done => {
+            walletRPC.get_languages()
+            .then(result => {
+              result.should.be.a.Object();
+              result.languages.should.be.a.Array();
+            })
+            .then(done, done);
+          });
+        });
+
+        describe('is_multisig()', () => {
+          it(`should get if ${network}_wallet is multisig`, done => {
+            walletRPC.is_multisig()
+            .then(result => {
+              result.should.be.a.Object();
+              result.multisig.should.be.a.Boolean();
+              result.multisig.should.be.equal(false);
+            })
+            .then(done, done);
+          });
+        });
+
+        // TODO prepare_multisig
+        // TODO make_multisig
+        // TODO export_multisig_info
+        // TODO import_multisig_info
+        // TODO finalize_multisig
+        // TODO sign_multisig
+        // TODO submit_multisig
+
+        describe('rescan_spent()', () => {
+          it('should rescan spent outputs', done => {
+            walletRPC.rescan_spent()
+            .then(result => {
+              result.should.be.a.Object();
+            })
+            .then(done, done);
+          })
+          .timeout(60000);
+        });
+
+        describe('rescan_blockchain()', () => {
+          it('should rescan blockchain', done => {
+            walletRPC.rescan_blockchain()
+            .then(result => {
+              result.should.be.a.Object();
+            })
+            .then(done, done);
+          })
+          .timeout(60000);
+        });
+
+        // // Make sure to test stop_wallet() last
+        // describe('stop_wallet()', () => {
+        //   it('should stop wallet', done => {
+        //     walletRPC.stop_wallet()
+        //     .then(result => {
+        //       result.should.be.a.Object();
+        //       // TODO restart wallet
+        //     })
+        //     .then(done, done);
+        //   });
+        // });
       });
     })
     .then(done, done);
