@@ -763,11 +763,11 @@ describe('walletRPC constructor', () => {
           });
         });
 
-        let address_index = '';
+        let address_index = 0;
 
         describe('create_address()', () => {
           it('should create new subaddress', done => {
-            walletRPC.create_address()
+            walletRPC.create_address(0, 'monerojs unit test suite')
             .then(result => {
               result.should.be.a.Object();
               result.address.should.be.a.String();
@@ -780,7 +780,7 @@ describe('walletRPC constructor', () => {
 
         describe('label_address()', () => {
           it('should set address label', done => {
-            walletRPC.label_address({ major: 0, minor: address_index }, 'monerojs unit test suite')
+            walletRPC.label_address({ major: 0, minor: address_index }, 'monerojs unit test suite subaddress label')
             .then(result => {
               result.should.be.a.Object();
             })
@@ -795,6 +795,149 @@ describe('walletRPC constructor', () => {
               result.should.be.a.Object();
               result.subaddress_accounts.should.be.a.Array();
               result.subaddress_accounts[0].account_index.should.be.a.Number();
+            })
+            .then(done, done);
+          });
+        });
+
+        let account_index = 0;
+
+        describe('create_account()', () => {
+          it('should create new account', done => {
+            walletRPC.create_account('monerojs unit test suite')
+            .then(result => {
+              result.should.be.a.Object();
+              result.address.should.be.a.String();
+              result.account_index.should.be.a.Number();
+              account_index = result.account_index;
+            })
+            .then(done, done);
+          });
+        });
+
+        describe('label_account()', () => {
+          it('should label wallet account', done => {
+            walletRPC.label_account(account_index, 'monerojs unit test suite account label')
+            .then(result => {
+              result.should.be.a.Object();
+            })
+            .then(done, done);
+          });
+        });
+
+        describe('tag_accounts()', () => {
+          it('should tag wallet account', done => {
+            walletRPC.tag_accounts([account_index], 'monerojs unit test suite account tag')
+            .then(result => {
+              result.should.be.a.Object();
+            })
+            .then(done, done);
+          });
+        });
+
+        describe('get_account_tags()', () => {
+          it('should get account tags', done => {
+            walletRPC.get_account_tags(1)
+            .then(result => {
+              result.should.be.a.Object();
+              result.account_tags.should.be.a.Array();
+            })
+            .then(done, done);
+          });
+        });
+
+        describe('untag_accounts()', () => {
+          it('should untag wallet account', done => {
+            walletRPC.tag_accounts([account_index])
+            .then(result => {
+              result.should.be.a.Object();
+            })
+            .then(done, done);
+          });
+        });
+
+        describe('set_account_tag_description()', () => {
+          it('should add a description to the wallet account tag', done => {
+            walletRPC.set_account_tag_description('monerojs unit test suite account tag', 'monerojs unit test suite account tag description')
+            .then(result => {
+              result.should.be.a.Object();
+            })
+            .then(done, done);
+          });
+        });
+
+        describe('get_height()', () => {
+          it('should get wallet height', done => {
+            walletRPC.get_height()
+            .then(result => {
+              result.should.be.a.Object();
+              result.height.should.be.a.Number();
+            })
+            .then(done, done);
+          });
+        });
+
+        describe('query_key()', () => {
+          it('should get wallet view key', done => {
+            walletRPC.query_key('view_key')
+            .then(result => {
+              result.should.be.a.Object();
+              result.key.should.be.a.String();
+              // TODO test that key is valid
+            })
+            .then(done, done);
+          });
+          it('should get wallet spend key', done => {
+            walletRPC.query_key('spend_key')
+            .then(result => {
+              result.should.be.a.Object();
+              result.key.should.be.a.String();
+              // TODO test that key is valid
+            })
+            .then(done, done);
+          });
+          it('should get wallet mnemonic', done => {
+            walletRPC.query_key('mnemonic')
+            .then(result => {
+              result.should.be.a.Object();
+              result.key.should.be.a.String();
+              // TODO test that mnemonic is valid
+            })
+            .then(done, done);
+          });
+        });
+
+        describe('view_key()', () => {
+          it('should get wallet view key', done => {
+            walletRPC.view_key()
+            .then(result => {
+              result.should.be.a.Object();
+              result.key.should.be.a.String();
+              // TODO test that key is valid
+            })
+            .then(done, done);
+          });
+        });
+
+        describe('spend_key()', () => {
+          it('should get wallet spend key', done => {
+            walletRPC.spend_key()
+            .then(result => {
+              result.should.be.a.Object();
+              result.key.should.be.a.String();
+              // TODO test that key is valid
+            })
+            .then(done, done);
+          });
+        });
+
+        describe('mnemonic()', () => {
+          it('should get wallet mnemonic', done => {
+            walletRPC.mnemonic()
+            .then(result => {
+              result.should.be.a.Object();
+              result.key.should.be.a.String();
+              // TODO test that mnemonic is valid
             })
             .then(done, done);
           });
