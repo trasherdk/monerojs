@@ -4,7 +4,7 @@ var Monero = require('../index.js');
 let network = 'testnet'; // Network to test
 
 // TODO do not test block heights over max block height of current network/node
-
+/*
 describe('remote nodes', () => {
   const daemons = require('../lib/remote-daemons.json');
 
@@ -701,82 +701,107 @@ describe('daemonRPC constructor', () => {
   })
   .timeout(5000);
 });
+*/
+describe('walletRPC constructor', () => {
+  it('should connect to wallet', done => {
+    var walletRPC = new Monero.walletRPC({ autoconnect: true, network: network, initialize: false })
+    .then(wallet => {
+      wallet.should.be.a.Object();
 
-// TODO Fix availability check!  Is it a nesting/initialization problem?
-// // Only test monero-wallet-rpc if available
-// var checkForLocalWalletRPC = new Monero.walletRPC({ autoconnect: true, network: network, initialize: false })
-// .then(walletCheck => {
-//   walletCheck.should.be.a.Object();
-//   console.log(1);
-//   // monero-wallet-rpc available; test
-  describe('walletRPC constructor', () => {
-    it('should connect to wallet', done => {
-      var walletRPC = new Monero.walletRPC({ autoconnect: true, network: network, initialize: false })
-      .then(wallet => {
-        wallet.should.be.a.Object();
+      walletRPC = wallet; // Store daemon interface in global variable
 
-        walletRPC = wallet; // Store daemon interface in global variable
-
-        describe('walletRPC methods', () => {
-          describe('create_wallet()', () => {
-            it('should create a new wallet', done => {
-              walletRPC.create_wallet('monero_wallet')
-              .then(result => {
+      describe('walletRPC methods', () => {
+        describe('create_wallet()', () => {
+          it(`should create a new wallet ${network}_wallet (unless it exists)`, done => {
+            walletRPC.create_wallet(`${network}_wallet`)
+            .then(result => {
+              result.should.be.a.Object();
+              if (result.hasOwnProperty('error')) {
                 if (result.hasOwnProperty('error')) {
-                  if (result.hasOwnProperty('error')) {
-                    if (result.error.code == -21) {
-                      result.error.code.should.be.equal(-21);
-                    }
+                  if (result.error.code == -21) {
+                    result.error.code.should.be.equal(-21);
                   }
-                } else {
-                  result.should.be.a.Object();
                 }
-              })
-              .then(done, done);
-            });
-          });
-
-          describe('open_wallet()', () => {
-            it('should open monero_wallet', done => {
-              walletRPC.open_wallet('monero_wallet')
-              .then(result => {
-                result.should.be.a.Object();
-              })
-              .then(done, done);
-            });
-          });
-
-          describe('getbalance()', () => {
-            it('should retrieve the account balance', done => {
-              walletRPC.getbalance()
-              .then(result => {
-                result.balance.should.be.a.Number();
-              })
-              .then(done, done);
-            });
-          });
-
-          describe('getaddress()', () => {
-            it('should return the account address', done => {
-              walletRPC.getaddress()
-              .then(result => {
-                result.address.should.be.a.String();
-              })
-              .then(done, done);
-            });
+              } else {
+                result.status.should.be.a.String();
+                result.status.should.be.equal('OK');
+              }
+            })
+            .then(done, done);
           });
         });
-      })
-      .then(done, done);
-    });
-  })
-  .timeout(5000);
-// })
-// .catch(err => {
-//   // monero-wallet-rpc unavailable; report that tests are not possible
-//   describe('walletRPC constructor', () => {
-//     it('should not test monero-wallet-rpc unless it is running', done => {
-//       done();
-//     });
-//   });
-// });
+
+        describe('open_wallet()', () => {
+          it(`should open ${network}_wallet`, done => {
+            walletRPC.open_wallet(`${network}_wallet`)
+            .then(result => {
+              result.should.be.a.Object();
+            })
+            .then(done, done);
+          });
+        });
+
+        describe('getbalance()', () => {
+          it('should retrieve the account balance', done => {
+            walletRPC.getbalance()
+            .then(result => {
+              result.should.be.a.Object();
+              result.balance.should.be.a.Number();
+            })
+            .then(done, done);
+          });
+        });
+
+        describe('getaddress()', () => {
+          it('should return the account address', done => {
+            walletRPC.getaddress()
+            .then(result => {
+              result.should.be.a.Object();
+              result.address.should.be.a.String();
+            })
+            .then(done, done);
+          });
+        });
+
+        let address_index = '';
+
+        describe('create_address()', () => {
+          it('should create new subaddress', done => {
+            walletRPC.create_address()
+            .then(result => {
+              result.should.be.a.Object();
+              result.address.should.be.a.String();
+              result.address_index.should.be.a.Number();
+              address_index = result.address_index;
+            })
+            .then(done, done);
+          });
+        });
+
+        describe('label_address()', () => {
+          it('should set address label', done => {
+            walletRPC.label_address({ major: 0, minor: address_index }, 'monerojs unit test suite')
+            .then(result => {
+              result.should.be.a.Object();
+            })
+            .then(done, done);
+          });
+        });
+
+        describe('get_accounts()', () => {
+          it('should get wallet accounts', done => {
+            walletRPC.get_accounts()
+            .then(result => {
+              result.should.be.a.Object();
+              result.subaddress_accounts.should.be.a.Array();
+              result.subaddress_accounts[0].account_index.should.be.a.Number();
+            })
+            .then(done, done);
+          });
+        });
+      });
+    })
+    .then(done, done);
+  });
+})
+.timeout(5000);
