@@ -744,7 +744,8 @@ describe('walletRPC constructor', () => {
             .then(result => {
               result.should.be.a.Object();
               result.balance.should.be.a.Number();
-              balance = result.balance;
+              result.unlocked_balance.should.be.a.Number();
+              balance = result.unlocked_balance;
             })
             .then(done, done);
           });
