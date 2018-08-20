@@ -759,6 +759,9 @@ describe('walletRPC constructor', () => {
             .then(result => {
               result.should.be.a.Object();
               result.address.should.be.a.String();
+              result.addresses.should.be.a.Array();
+              result.addresses[0].should.be.a.Object();
+              result.addresses[0].address_index.should.be.a.Number();
               address = result.address;
             })
             .then(done, done);
@@ -879,6 +882,7 @@ describe('walletRPC constructor', () => {
           });
         });
 
+        // TODO figure out why this sometimes doesn't run on wallets with unlocked balance
         if (balance > 0) { // can only test transfer and sweep methods if wallet has balance
           // TODO request funding from faucet
           let tx_blob = '';
@@ -1333,16 +1337,17 @@ describe('walletRPC constructor', () => {
           .timeout(60000);
         });
 
-        describe('rescan_blockchain()', () => {
-          it('should rescan blockchain', done => {
-            walletRPC.rescan_blockchain()
-            .then(result => {
-              result.should.be.a.Object();
-            })
-            .then(done, done);
-          })
-          .timeout(60000);
-        });
+        // // Destroys wallet cache
+        // describe('rescan_blockchain()', () => {
+        //   it('should rescan blockchain', done => {
+        //     walletRPC.rescan_blockchain()
+        //     .then(result => {
+        //       result.should.be.a.Object();
+        //     })
+        //     .then(done, done);
+        //   })
+        //   .timeout(60000);
+        // });
 
         // // Make sure to test stop_wallet() last
         // describe('stop_wallet()', () => {
@@ -1385,6 +1390,7 @@ describe('walletRPC constructor', () => {
           });
         });
 
+        // TODO check if wallet is_multisig; if it is, check balance
         let multisig_info_22_a = '';
 
         describe('a. prepare_multisig()', () => {
@@ -1426,6 +1432,7 @@ describe('walletRPC constructor', () => {
           });
         });
 
+        // TODO check if wallet is_multisig; if it is, check balance
         let multisig_info_22_b = '';
 
         describe('b. prepare_multisig()', () => {
@@ -1505,6 +1512,7 @@ describe('walletRPC constructor', () => {
           });
         });
 
+        // TODO check if wallet is_multisig; if it is, check balance
         let multisig_info_23_a = '';
 
         describe('a. prepare_multisig()', () => {
@@ -1546,6 +1554,7 @@ describe('walletRPC constructor', () => {
           });
         });
 
+        // TODO check if wallet is_multisig; if it is, check balance
         let multisig_info_23_b = '';
 
         describe('b. prepare_multisig()', () => {
@@ -1587,6 +1596,7 @@ describe('walletRPC constructor', () => {
           });
         });
 
+        // TODO check if wallet is_multisig; if it is, check balance
         let multisig_info_23_c = '';
 
         describe('c. prepare_multisig()', () => {
