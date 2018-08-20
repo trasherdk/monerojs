@@ -1,5 +1,5 @@
 'use strict';
-var Monero = require('../index.js');
+const Monero = require('../index.js');
 
 let network = 'testnet'; // Network to test
 
