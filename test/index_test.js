@@ -1008,17 +1008,19 @@ describe('walletRPC constructor', () => {
 
           // TODO sweep_single
 
-          // // TODO find out why this doesn't work
-          // describe('relay_tx()', () => {
-          //   it('should relay transaction', done => {
-          //     walletRPC.relay_tx(tx_blob)
-          //     .then(result => {
-          //       result.should.be.a.Object();
-          //       console.log(result);
-          //     })
-          //     .then(done, done);
-          //   });
-          // });
+          describe('relay_tx()', () => {
+            it('should relay transaction', done => {
+              walletRPC.relay_tx(tx_metadata)
+              .then(result => {
+                result.should.be.a.Object();
+                result.fee.should.be.a.Number();
+                result.tx_blob.should.be.a.String();
+                result.tx_hash.should.be.a.String();
+                result.tx_key.should.be.a.String();
+              })
+              .then(done, done);
+            });
+          });
         }
 
         describe('store()', () => {
