@@ -499,6 +499,7 @@ describe('daemonRPC constructor', () => {
 
           describe('start_mining()', () => {
             let address = '';
+            // monerojs donation addresses
             if (network == 'mainnet') {
               address = '44AFFq5kSiGBoZ4NMDwYtN18obc8AemS33DBLWs3H7otXft3XjrpDtQGv7SqSsaBYBb98uNbr2VBBEt7f2wfn3RVGQBEP3A';
             } else if (network == 'testnet') {
@@ -877,7 +878,8 @@ describe('walletRPC constructor', () => {
           });
         });
 
-        if (balance > 0) {
+        if (balance > 0) { // can only test transfer and sweep methods if wallet has balance
+          // TODO request funding from faucet
           let tx_blob = '';
           let tx_metadata = '';
 
@@ -1434,13 +1436,16 @@ describe('walletRPC constructor', () => {
             .then(done, done);
           });
         });
-        console.log(multisig_info_22_a);
+        
+        let multisig_address_22_b = '';
+
         describe('b. make_multisig()', () => {
           it(`should make ${network}_multisig_wallet_2-2_b multisig`, done => {
-            walletRPC.make_multisig(2, multisig_info_22_a)
+            walletRPC.make_multisig(2, [multisig_info_22_a])
             .then(result => {
               result.should.be.a.Object();
-              console.log(result);
+              result.address.should.be.a.String();
+              multisig_address_22_b = result.address;
             })
             .then(done, done);
           });
@@ -1458,10 +1463,11 @@ describe('walletRPC constructor', () => {
 
         describe('a. make_multisig()', () => {
           it(`should make ${network}_multisig_wallet_2-2_a multisig`, done => {
-            walletRPC.make_multisig(2, multisig_info_22_b)
+            walletRPC.make_multisig(2, [multisig_info_22_b])
             .then(result => {
               result.should.be.a.Object();
-              console.log(result);
+              result.address.should.be.a.String();
+              result.address.should.be.equal(multisig_address_22_b);
             })
             .then(done, done);
           });
