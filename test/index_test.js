@@ -1011,7 +1011,7 @@ describe('walletRPC constructor', () => {
           // // TODO find out why this doesn't work
           // describe('relay_tx()', () => {
           //   it('should relay transaction', done => {
-          //     walletRPC.relay_tx(tx_blob/*, tx_metadata*/)
+          //     walletRPC.relay_tx(tx_blob)
           //     .then(result => {
           //       result.should.be.a.Object();
           //       console.log(result);
@@ -1353,7 +1353,7 @@ describe('walletRPC constructor', () => {
         //   });
         // });
       });
-      /*
+
       describe('2/2 multisig', () => {
         describe('a. create_wallet()', () => {
           it(`should create a new wallet ${network}_multisig_wallet_2-2_a (unless it exists)`, done => {
@@ -1475,7 +1475,7 @@ describe('walletRPC constructor', () => {
       });
 
       describe('2/3 multisig', () => {
-        describe('create_wallet()', () => {
+        describe('a. create_wallet()', () => {
           it(`should create a new wallet ${network}_multisig_wallet_2-3_a (unless it exists)`, done => {
             walletRPC.create_wallet(`${network}_multisig_wallet_2-3_a`)
             .then(result => {
@@ -1492,7 +1492,7 @@ describe('walletRPC constructor', () => {
           });
         });
 
-        describe('open_wallet()', () => {
+        describe('a. open_wallet()', () => {
           it(`should open ${network}_multisig_wallet_2-3_a`, done => {
             walletRPC.open_wallet(`${network}_multisig_wallet_2-3_a`)
             .then(result => {
@@ -1504,7 +1504,7 @@ describe('walletRPC constructor', () => {
 
         let multisig_info_23_a = '';
 
-        describe('prepare_multisig()', () => {
+        describe('a. prepare_multisig()', () => {
           it(`should prepare ${network}_multisig_wallet_2-3_a for multisig`, done => {
             walletRPC.prepare_multisig()
             .then(result => {
@@ -1516,7 +1516,7 @@ describe('walletRPC constructor', () => {
           });
         });
 
-        describe('create_wallet()', () => {
+        describe('b. create_wallet()', () => {
           it(`should create a new wallet ${network}_multisig_wallet_2-3_b (unless it exists)`, done => {
             walletRPC.create_wallet(`${network}_multisig_wallet_2-3_b`)
             .then(result => {
@@ -1533,7 +1533,7 @@ describe('walletRPC constructor', () => {
           });
         });
 
-        describe('open_wallet()', () => {
+        describe('b. open_wallet()', () => {
           it(`should open ${network}_multisig_wallet_2-3_b`, done => {
             walletRPC.open_wallet(`${network}_multisig_wallet_2-3_b`)
             .then(result => {
@@ -1545,7 +1545,7 @@ describe('walletRPC constructor', () => {
 
         let multisig_info_23_b = '';
 
-        describe('prepare_multisig()', () => {
+        describe('b. prepare_multisig()', () => {
           it(`should prepare ${network}_multisig_wallet_2-3_b for multisig`, done => {
             walletRPC.prepare_multisig()
             .then(result => {
@@ -1557,7 +1557,7 @@ describe('walletRPC constructor', () => {
           });
         });
 
-        describe('create_wallet()', () => {
+        describe('c. create_wallet()', () => {
           it(`should create a new wallet ${network}_multisig_wallet_2-3_c (unless it exists)`, done => {
             walletRPC.create_wallet(`${network}_multisig_wallet_2-3_c`)
             .then(result => {
@@ -1574,7 +1574,7 @@ describe('walletRPC constructor', () => {
           });
         });
 
-        describe('open_wallet()', () => {
+        describe('c. open_wallet()', () => {
           it(`should open ${network}_multisig_wallet_2-3_c`, done => {
             walletRPC.open_wallet(`${network}_multisig_wallet_2-3_c`)
             .then(result => {
@@ -1586,7 +1586,7 @@ describe('walletRPC constructor', () => {
 
         let multisig_info_23_c = '';
 
-        describe('prepare_multisig()', () => {
+        describe('c. prepare_multisig()', () => {
           it(`should prepare ${network}_multisig_wallet_2-3_c for multisig`, done => {
             walletRPC.prepare_multisig()
             .then(result => {
@@ -1597,8 +1597,148 @@ describe('walletRPC constructor', () => {
             .then(done, done);
           });
         });
+
+        describe('a. open_wallet()', () => {
+          it(`should open ${network}_multisig_wallet_2-3_a`, done => {
+            walletRPC.open_wallet(`${network}_multisig_wallet_2-3_a`)
+            .then(result => {
+              result.should.be.a.Object();
+            })
+            .then(done, done);
+          });
+        });
+
+        let multisig_finalization_23_a = '';
+
+        describe('a. make_multisig()', () => {
+          it(`should make ${network}_multisig_wallet_2-3_a multisig`, done => {
+            walletRPC.make_multisig(2, [multisig_info_23_b, multisig_info_23_c])
+            .then(result => {
+              result.should.be.a.Object();
+              result.address.should.be.a.String();
+              result.multisig_info.should.be.a.String();
+              multisig_finalization_23_a = result.multisig_info;
+            })
+            .then(done, done);
+          });
+        });
+
+        describe('b. open_wallet()', () => {
+          it(`should open ${network}_multisig_wallet_2-3_b`, done => {
+            walletRPC.open_wallet(`${network}_multisig_wallet_2-3_b`)
+            .then(result => {
+              result.should.be.a.Object();
+            })
+            .then(done, done);
+          });
+        });
+
+        let multisig_finalization_23_b = '';
+
+        describe('b. make_multisig()', () => {
+          it(`should make ${network}_multisig_wallet_2-3_b multisig`, done => {
+            walletRPC.make_multisig(2, [multisig_info_23_a, multisig_info_23_c])
+            .then(result => {
+              result.should.be.a.Object();
+              result.address.should.be.a.String();
+              result.multisig_info.should.be.a.String();
+              multisig_finalization_23_b = result.multisig_info;
+            })
+            .then(done, done);
+          });
+        });
+
+        describe('c. open_wallet()', () => {
+          it(`should open ${network}_multisig_wallet_2-3_c`, done => {
+            walletRPC.open_wallet(`${network}_multisig_wallet_2-3_c`)
+            .then(result => {
+              result.should.be.a.Object();
+            })
+            .then(done, done);
+          });
+        });
+
+        let multisig_finalization_23_c = '';
+
+        describe('c. make_multisig()', () => {
+          it(`should make ${network}_multisig_wallet_2-3_c multisig`, done => {
+            walletRPC.make_multisig(2, [multisig_info_23_a, multisig_info_23_b])
+            .then(result => {
+              result.should.be.a.Object();
+              result.address.should.be.a.String();
+              result.multisig_info.should.be.a.String();
+              multisig_finalization_23_c = result.multisig_info;
+            })
+            .then(done, done);
+          });
+        });
+
+        let multisig_address_22_c = ''
+
+        describe('c. finalize_multisig()', () => {
+          it(`should finalize ${network}_multisig_wallet_2-3_c as multisig`, done => {
+            walletRPC.finalize_multisig([multisig_finalization_23_a, multisig_finalization_23_b])
+            .then(result => {
+              result.should.be.a.Object();
+              result.address.should.be.a.String();
+              multisig_address_22_c = result.address;
+            })
+            .then(done, done);
+          });
+        });
+
+        describe('a. open_wallet()', () => {
+          it(`should open ${network}_multisig_wallet_2-3_a`, done => {
+            walletRPC.open_wallet(`${network}_multisig_wallet_2-3_a`)
+            .then(result => {
+              result.should.be.a.Object();
+            })
+            .then(done, done);
+          });
+        });
+
+        describe('a. finalize_multisig()', () => {
+          it(`should finalize ${network}_multisig_wallet_2-3_a as multisig`, done => {
+            walletRPC.finalize_multisig([multisig_finalization_23_b, multisig_finalization_23_c])
+            .then(result => {
+              result.should.be.a.Object();
+              result.address.should.be.a.String();
+              result.address.should.be.equal(multisig_address_22_c);
+            })
+            .then(done, done);
+          });
+        });
+
+        describe('b. open_wallet()', () => {
+          it(`should open ${network}_multisig_wallet_2-3_b`, done => {
+            walletRPC.open_wallet(`${network}_multisig_wallet_2-3_b`)
+            .then(result => {
+              result.should.be.a.Object();
+            })
+            .then(done, done);
+          });
+        });
+
+        describe('b. finalize_multisig()', () => {
+          it(`should finalize ${network}_multisig_wallet_2-3_b as multisig`, done => {
+            walletRPC.finalize_multisig([multisig_finalization_23_a, multisig_finalization_23_c])
+            .then(result => {
+              result.should.be.a.Object();
+              result.address.should.be.a.String();
+              result.address.should.be.equal(multisig_address_22_c);
+            })
+            .then(done, done);
+          });
+        });
+
+        // TODO export_multisig_info
+        // TODO import_multisig_info
+        // TODO sign_multisig
+        // TODO submit_multisig
+
+        // TODO to test multisignature spends, open a multisignature wallet and check its balance.  If balance > 0, export_multisig_info from at least ${threshold} other wallets and import_multisig_info them.  Initiate a transfer from any of the multisig wallets and sign_multisig it up to the ${threshold} before using submit_multisig.  Add this example for 2/2 and 2/3.
+
       });
-      */
     })
     .then(done, done);
   });
