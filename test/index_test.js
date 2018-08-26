@@ -555,6 +555,7 @@ describe('daemonRPC constructor', () => {
               .then(done, done);
             });
           });
+          // TODO make SURE that mining is stopped.
 
           describe('save_bc()', () => {
             it('should save blockchain', done => {
