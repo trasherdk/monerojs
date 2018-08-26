@@ -1,3 +1,13 @@
+/**
+ * moneronodejs
+ * 
+ * ES6 JavaScript Monero library 
+ * https://github.com/sneurlax/moneronodejs
+ * 
+ * @author     sneurlax <sneurlax@gmail.com> (https://github.com/sneurlax)
+ * @copyright  2018
+ * @license    MIT
+ */
 'use strict'
 
 var daemonRPC = require('./lib/daemonRPC.js');
