@@ -1,14 +1,14 @@
 {
-  "name": "moneronodejs",
-  "version": "1.0.0",
-  "description": "A Monero library written in Node.js",
+  "name": "monerojs",
+  "version": "0.1.0",
+  "description": "ES6 JavaScript Monero library",
   "main": "index.js",
   "scripts": {
     "test": "node_modules/.bin/mocha"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/monero-integrations/moneronodejs.git"
+    "url": "git+https://github.com/sneurlax/monerojs.git"
   },
   "keywords": [
     "monero"
@@ -21,9 +21,9 @@
   ],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/sneurlax/moneronodejs/issues"
+    "url": "https://github.com/sneurlax/monerojs/issues"
   },
-  "homepage": "https://github.com/sneurlax/moneronodejs#readme",
+  "homepage": "https://github.com/sneurlax/monerojs#readme",
   "dependencies": {
     "request": "^2.85.0",
     "request-promise": "^4.2.2"
