@@ -1753,6 +1753,9 @@ describe('walletRPC constructor', () => {
 
       });
     })
+    .catch(error => {
+      // TODO handle error
+    })
     .then(done, done);
   });
 })
