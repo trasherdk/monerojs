@@ -41,7 +41,7 @@ var daemonRPC = new Monero.daemonRPC({ autoconnect: true })
 ```js
 // const daemonRPC = new Monero.daemonRPC().then(...).catch(...); // Connect with defaults
 // const daemonRPC = new Monero.daemonRPC('127.0.0.1', 28081, 'user', 'pass', 'http').then(...).catch(...); // Example of passing in parameters
-// const daemonRPC = new Monero.daemonRPC({ port: 28081, protocol: 'https').then(...).catch(...); // Parameters can be passed in as an object/dictionary
+// const daemonRPC = new Monero.daemonRPC({ port: 28081, protocol: 'https' }).then(...).catch(...); // Parameters can be passed in as an object/dictionary
 const daemonRPC = new Monero.daemonRPC() // Connect with defaults
 .then(daemon => {
   daemonRPC = daemon; // Store daemon interface in global variable
@@ -60,7 +60,7 @@ const daemonRPC = new Monero.daemonRPC() // Connect with defaults
 
 ```js
 // const walletRPC = new Monero.walletRPC('127.0.0.1', 28083, 'user', 'pass', 'http').then(...).catch(...); // Example of passing in parameters
-// const walletRPC = new Monero.walletRPC({ port: 28083, protocol: 'https').then(...).catch(...); // Parameters can be passed in as an object/dictionary
+// const walletRPC = new Monero.walletRPC({ port: 28083, protocol: 'https' }).then(...).catch(...); // Parameters can be passed in as an object/dictionary
 // const walletRPC = new Monero.walletRPC({ autoconnect: true }).then(...).catch(...); // Autoconnect
 const walletRPC = new Monero.walletRPC() // Connect with defaults
 .then(wallet => {
