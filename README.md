@@ -20,7 +20,7 @@ JSON-RPC interfaces and their methods are wrapped in promises.
 #### Autoconnect to Monero daemon (`monerod`)
 
 ```js
-const Monero = require('moneronodejs');
+const Monero = require('monerojs');
 
 var daemonRPC = new Monero.daemonRPC({ autoconnect: true })
 .then((daemon) => {
