@@ -13,9 +13,13 @@ npm install monerojs
 ```
 *`--save` optional*
 
+## Testing
+
+Install dependencies (`npm install`) and then run `npm test`
+
 ## Usage
 
-JSON-RPC interfaces and their methods are wrapped in promises.
+JSON-RPC interfaces and their methods are wrapped in promises.  Much more exhaustive examples can be found in the [tests](https://github.com/monerojs/monerojs/blob/dev/test/index_test.js)
 
 #### Autoconnect to Monero daemon (`monerod`)
 
