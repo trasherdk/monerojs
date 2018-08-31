@@ -1592,10 +1592,8 @@ describe('walletRPC constructor', () => {
             .then(result => {
               result.should.be.a.Object();
               if (result.hasOwnProperty('error')) {
-                if (result.hasOwnProperty('error')) {
-                  if (result.error.code == -21) {
-                    result.error.code.should.be.equal(-21);
-                  }
+                if (result.error.code == -21) {
+                  result.error.code.should.be.equal(-21);
                 }
               }
             })
@@ -1634,10 +1632,8 @@ describe('walletRPC constructor', () => {
             .then(result => {
               result.should.be.a.Object();
               if (result.hasOwnProperty('error')) {
-                if (result.hasOwnProperty('error')) {
-                  if (result.error.code == -21) {
-                    result.error.code.should.be.equal(-21);
-                  }
+                if (result.error.code == -21) {
+                  result.error.code.should.be.equal(-21);
                 }
               }
             })
@@ -1714,10 +1710,8 @@ describe('walletRPC constructor', () => {
             .then(result => {
               result.should.be.a.Object();
               if (result.hasOwnProperty('error')) {
-                if (result.hasOwnProperty('error')) {
-                  if (result.error.code == -21) {
-                    result.error.code.should.be.equal(-21);
-                  }
+                if (result.error.code == -21) {
+                  result.error.code.should.be.equal(-21);
                 }
               }
             })
