@@ -442,7 +442,8 @@ describe('daemonRPC constructor', () => {
           it('should get transaction pool info', done => {
             daemonRPC.get_transaction_pool()
             .then(result => {
-              result.should.be.a.Object();
+              if (typeof result == 'string')
+                result = JSON.parse(result);
               result.should.be.a.Object();
               result.status.should.be.a.String();
               result.status.should.be.equal('OK');
