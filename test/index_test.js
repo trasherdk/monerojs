@@ -419,18 +419,24 @@ describe('daemonRPC constructor', () => {
         });
 
         describe('is_key_image_spent()', () => {
+          let key_image = '';
+          if (network == 'mainnet') {
+            key_image = '8d1bd8181bf7d857bdb281e0153d84cd55a3fcaa57c3e570f4a49f935850b5e3';
+          } else if (network == 'testnet') {
+            key_image = '1492ffbd6374cd6ac7d3eede15f48466202f8e686ccdc6f515226d54816c063d';
+          } else if (network == 'stagenet') {
+            key_image = ''; // TODO
+          }
+
           it('should get spend status of key image', done => {
-            daemonRPC.is_key_image_spent(['8d1bd8181bf7d857bdb281e0153d84cd55a3fcaa57c3e570f4a49f935850b5e3'])
+            daemonRPC.is_key_image_spent([key_image])
             .then(result => {
               result.should.be.a.Object();
               result.status.should.be.a.String();
               result.status.should.be.equal('OK');
               result.spent_status.should.be.a.Array();
               result.spent_status[0].should.be.a.Number();
-              // TODO handle testnet and stagenet key images
-              if (network == 'mainnet') {
-                result.spent_status[0].should.be.equal(1);
-              }
+              result.spent_status[0].should.be.equal(1);
             })
             .then(done, done);
           });
