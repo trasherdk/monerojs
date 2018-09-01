@@ -738,21 +738,6 @@ describe('walletRPC constructor', () => {
           });
         });
 
-        let balance = 0;
-
-        describe('getbalance()', () => {
-          it('should retrieve the account balance', done => {
-            walletRPC.getbalance()
-            .then(result => {
-              result.should.be.a.Object();
-              result.balance.should.be.a.Number();
-              result.unlocked_balance.should.be.a.Number();
-              balance = result.unlocked_balance;
-            })
-            .then(done, done);
-          });
-        });
-
         let address = '';
 
         describe('getaddress()', () => {
@@ -765,6 +750,21 @@ describe('walletRPC constructor', () => {
               result.addresses[0].should.be.a.Object();
               result.addresses[0].address_index.should.be.a.Number();
               address = result.address;
+            })
+            .then(done, done);
+          });
+        });
+
+        let height = 0;
+
+        describe('get_height()', () => {
+          it('should get wallet height', done => {
+            walletRPC.get_height()
+            .then(result => {
+              result.should.be.a.Object();
+              result.height.should.be.a.Number();
+
+              height = result.height;
             })
             .then(done, done);
           });
@@ -1253,17 +1253,6 @@ describe('walletRPC constructor', () => {
             walletRPC.tag_accounts([account_index])
             .then(result => {
               result.should.be.a.Object();
-            })
-            .then(done, done);
-          });
-        });
-
-        describe('get_height()', () => {
-          it('should get wallet height', done => {
-            walletRPC.get_height()
-            .then(result => {
-              result.should.be.a.Object();
-              result.height.should.be.a.Number();
             })
             .then(done, done);
           });
