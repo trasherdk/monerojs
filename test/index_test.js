@@ -1100,7 +1100,6 @@ describe('walletRPC constructor', () => {
 
                   let reserve_proof = '';
 
-                  // TODO figure out why reserve proofs don't include balance
                   describe('get_reserve_proof()', () => {
                     it('should check reserve proof of primary account', done => {
                       walletRPC.get_reserve_proof(0, 1)
@@ -1117,7 +1116,6 @@ describe('walletRPC constructor', () => {
                     it('should check reserve proof of address', done => {
                       walletRPC.check_reserve_proof(address, reserve_proof)
                       .then(result => {
-                        console.log(result);
                         result.should.be.a.Object();
                         result.good.should.be.a.Boolean();
                         result.good.should.be.equal(true);
