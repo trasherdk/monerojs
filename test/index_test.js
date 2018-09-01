@@ -1134,7 +1134,16 @@ describe('walletRPC constructor', () => {
                       walletRPC.get_transfers()
                       .then(result => {
                         result.should.be.a.Object();
-                        console.log(result);
+                        if ('in' in result)
+                          result.in.should.be.a.Array();
+                        if ('out' in result)
+                        result.out.should.be.a.Array();
+                        if ('pending' in result)
+                          result.pending.should.be.a.Array();
+                        if ('pool' in result)
+                          result.pool.should.be.a.Array();
+                        if ('failed' in result)
+                          result.failed.should.be.a.Array();
                       })
                       .then(done, done);
                     });
