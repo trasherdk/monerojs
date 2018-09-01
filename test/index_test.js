@@ -1410,19 +1410,17 @@ describe('walletRPC constructor', () => {
           });
         });
 
-        // // TODO find out why this fails
-        // describe('verify()', () => {
-        //   it('should verify signed message', done => {
-        //     console.log(address, signature);
-        //     walletRPC.verify('monerojs unit test suite message', address, signature)
-        //     .then(result => {
-        //       result.should.be.a.Object();
-        //       result.good.should.be.a.Boolean();
-        //       result.good.should.be.equal(true);
-        //     })
-        //     .then(done, done);
-        //   });
-        // });
+        describe('verify()', () => {
+          it('should verify signed message', done => {
+            walletRPC.verify('monerojs unit test suite message', address, signature)
+            .then(result => {
+              result.should.be.a.Object();
+              result.good.should.be.a.Boolean();
+              result.good.should.be.equal(true);
+            })
+            .then(done, done);
+          });
+        });
 
         // TODO export_key_images
         // TODO import_key_images
