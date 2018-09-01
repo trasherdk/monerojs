@@ -776,6 +776,37 @@ describe('walletRPC constructor', () => {
           });
         });
 
+        let key_images = [];
+
+        describe('export_key_images()', () => {
+          it('should export signed key images', done => {
+            walletRPC.export_key_images()
+            .then(result => {
+              result.should.be.a.Object();
+              result.signed_key_images.should.be.a.Array();
+              key_images = result.signed_key_images;
+              result.signed_key_images[0].should.be.a.Object();
+              result.signed_key_images[0].key_image.should.be.a.String();
+              result.signed_key_images[0].signature.should.be.a.String();
+            })
+            .then(done, done);
+          });
+        });
+
+        describe('import_key_images()', () => {
+          it('should import signed key images', done => {
+            walletRPC.import_key_images(key_images)
+            .then(result => {
+              result.should.be.a.Object();
+              result.height.should.be.a.Number();
+              result.spent.should.be.a.Number();
+              result.unspent.should.be.a.Number();
+            })
+            .then(done, done);
+          })
+          .timeout(6000);
+        });
+
         let balance = 0;
 
         describe('getbalance()', () => {
@@ -927,7 +958,40 @@ describe('walletRPC constructor', () => {
                     .timeout(3000);
                   });
 
-                  // TODO sweep_single
+                  describe('sweep_single()', () => {
+                    it('should generate sweep transaction of a single key image', done => {
+                      walletRPC.sweep_single({
+                        key_image: key_images[0].key_image,
+                        address: address,
+                        mixin: 6,
+                        get_tx_keys: true,
+                        account_index: 0,
+                        subaddr_indices: 0,
+                        priority: 1,
+                        do_not_relay: true,
+                        get_tx_hex: true,
+                        get_tx_metadata: true
+                      })
+                      .then(result => {
+                        result.should.be.a.Object();
+                        console.log(result);
+                        result.amount_list.should.be.a.Array();
+                        result.amount_list[0].should.be.a.Number();
+                        result.fee_list.should.be.a.Array();
+                        result.fee_list[0].should.be.a.Number();
+                        result.tx_hash_list.should.be.a.Array();
+                        result.tx_hash_list[0].should.be.a.String();
+                        result.tx_key_list.should.be.a.Array();
+                        result.tx_key_list[0].should.be.a.String();
+                        result.tx_blob_list.should.be.a.Array();
+                        result.tx_blob_list[0].should.be.a.String();
+                        result.tx_metadata_list.should.be.a.Array();
+                        result.tx_metadata_list[0].should.be.a.String();
+                      })
+                      .then(done, done);
+                    })
+                    .timeout(3000);
+                  });
 
                   describe('relay_tx()', () => {
                     it('should relay transaction', done => {
@@ -1423,9 +1487,6 @@ describe('walletRPC constructor', () => {
             .then(done, done);
           });
         });
-
-        // TODO export_key_images
-        // TODO import_key_images
 
         let uri = '';
 
