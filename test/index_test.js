@@ -870,7 +870,7 @@ describe('walletRPC constructor', () => {
                     it('should generate potentially-split transaction', done => {
                       walletRPC.transfer_split({
                         address: address,
-                        amount: 0.1,
+                        amount: balance - balance/10,
                         mixin: 6,
                         get_tx_keys: true,
                         account_index: 0,
