@@ -744,6 +744,8 @@ describe('walletRPC constructor', () => {
           });
         });
 
+        // TODO refresh wallet
+
         let address = '';
 
         describe('getaddress()', () => {
@@ -827,6 +829,19 @@ describe('walletRPC constructor', () => {
                     });
                   });
                 } else {
+                  // Necessary because mocha doesn't do nested tests linearly/synchronously
+                  describe('open_wallet()', () => {
+                    it(`should open ${network}_wallet`, done => {
+                      walletRPC.open_wallet(`${network}_wallet`)
+                      .then(result => {
+                        result.should.be.a.Object();
+                      })
+                      .then(done, done);
+                    });
+                  });
+
+                  // TODO refresh wallet
+
                   let tx_blob = '';
                   let tx_metadata = '';
                   let tx_hash = '';
@@ -1807,6 +1822,8 @@ describe('walletRPC constructor', () => {
 
         let multisig_balance_22_a = 0;
 
+        // TODO refresh wallet
+
         describe('a. getbalance()', () => {
           it('should retrieve the account balance', done => {
             walletRPC.getbalance()
@@ -1835,6 +1852,8 @@ describe('walletRPC constructor', () => {
                     });
                   });
 
+                  // TODO refresh wallet
+
                   describe('a. export_multisig_info()', () => {
                     it('should export multisig info', done => {
                       walletRPC.export_multisig_info()
@@ -1857,6 +1876,8 @@ describe('walletRPC constructor', () => {
                       .then(done, done);
                     });
                   });
+
+                  // TODO refresh wallet
 
                   let address = '';
 
