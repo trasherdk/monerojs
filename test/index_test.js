@@ -860,7 +860,7 @@ describe('walletRPC constructor', () => {
                         do_not_relay: true,
                         get_tx_hex: true,
                         get_tx_metadata: true,
-                        payment_id: '1020304050607080'
+                        payment_id: '394dc6dfc57071eb897685e27e6017c45c656758fed9a0b01627f0a644547b5b'
                       })
                       .then(result => {
                         result.should.be.a.Object();
@@ -913,7 +913,7 @@ describe('walletRPC constructor', () => {
                       })
                       .then(done, done);
                     })
-                    .timeout(3000);
+                    .timeout(6000);
                   });
 
                   describe('sweep_dust()', () => {
@@ -925,7 +925,7 @@ describe('walletRPC constructor', () => {
                       })
                       .then(done, done);
                     })
-                    .timeout(3000);
+                    .timeout(30000);
                   });
 
                   describe('sweep_unmixable()', () => {
@@ -937,7 +937,7 @@ describe('walletRPC constructor', () => {
                       })
                       .then(done, done);
                     })
-                    .timeout(3000);
+                    .timeout(30000);
                   });
 
                   describe('sweep_all()', () => {
@@ -970,7 +970,7 @@ describe('walletRPC constructor', () => {
                       })
                       .then(done, done);
                     })
-                    .timeout(3000);
+                    .timeout(30000);
                   });
 
                   describe('sweep_single()', () => {
@@ -989,7 +989,6 @@ describe('walletRPC constructor', () => {
                       })
                       .then(result => {
                         result.should.be.a.Object();
-                        console.log(result);
                         result.amount_list.should.be.a.Array();
                         result.amount_list[0].should.be.a.Number();
                         result.fee_list.should.be.a.Array();
@@ -1005,7 +1004,7 @@ describe('walletRPC constructor', () => {
                       })
                       .then(done, done);
                     })
-                    .timeout(3000);
+                    .timeout(9000);
                   });
 
                   describe('relay_tx()', () => {
@@ -1022,27 +1021,29 @@ describe('walletRPC constructor', () => {
                     });
                   });
 
+                  // TODO request faucet transaction with this payment ID
                   // TODO wait for payment to be mined
                   describe('get_payments()', () => {
-                    it('should get payments with payment ID 1020304050607080', done => {
-                      walletRPC.get_payments('1020304050607080')
+                    it('should get payments with payment ID 394dc6dfc57071eb897685e27e6017c45c656758fed9a0b01627f0a644547b5b', done => {
+                      walletRPC.get_payments('394dc6dfc57071eb897685e27e6017c45c656758fed9a0b01627f0a644547b5b')
                       .then(result => {
                         result.should.be.a.Object();
                         // TODO finish test
-                        console.log(result);
+                        // console.log(result);
                       })
                       .then(done, done);
                     });
                   });
 
+                  // TODO request faucet transaction with this payment ID
                   // TODO wait for payment to be mined
                   describe('get_bulk_payments()', () => {
-                    it(`should get payments with payment ID 1020304050607080 from height ${height}`, done => {
-                      walletRPC.get_bulk_payments('1020304050607080', height)
+                    it(`should get payments with payment ID 394dc6dfc57071eb897685e27e6017c45c656758fed9a0b01627f0a644547b5b from height ${Math.floor((height - 1000) / 10000) * 10000}`, done => {
+                      walletRPC.get_bulk_payments('394dc6dfc57071eb897685e27e6017c45c656758fed9a0b01627f0a644547b5b', Math.floor((height - 1000) / 10000) * 10000)
                       .then(result => {
                         result.should.be.a.Object();
                         // TODO finish test
-                        console.log(result);
+                        // console.log(result);
                       })
                       .then(done, done);
                     });
@@ -1430,11 +1431,11 @@ describe('walletRPC constructor', () => {
 
         describe('make_integrated_address()', () => {
           it('should make integrated address', done => {
-            walletRPC.make_integrated_address('1020304050607080')
+            walletRPC.make_integrated_address('394dc6dfc57071eb')
             .then(result => {
               result.should.be.a.Object();
               result.payment_id.should.be.a.String();
-              result.payment_id.should.be.equal('1020304050607080');
+              result.payment_id.should.be.equal('394dc6dfc57071eb');
               result.integrated_address.should.be.a.String();
               integrated_address = result.integrated_address;
             })
@@ -1448,7 +1449,7 @@ describe('walletRPC constructor', () => {
             .then(result => {
               result.should.be.a.Object();
               result.payment_id.should.be.a.String();
-              result.payment_id.should.be.equal('1020304050607080');
+              result.payment_id.should.be.equal('394dc6dfc57071eb');
             })
             .then(done, done);
           });
@@ -1507,7 +1508,7 @@ describe('walletRPC constructor', () => {
 
         describe('make_uri()', () => {
           it('should make uri', done => {
-            walletRPC.make_uri(address, 0.123456789101, '1020304050607080', 'monerojs unit test suite', 'monerojs unit test suite uri')
+            walletRPC.make_uri(address, 0.123456789101, '394dc6dfc57071eb897685e27e6017c45c656758fed9a0b01627f0a644547b5b', 'monerojs unit test suite', 'monerojs unit test suite uri')
             .then(result => {
               result.should.be.a.Object();
               result.uri.should.be.a.String();
@@ -1528,7 +1529,7 @@ describe('walletRPC constructor', () => {
               result.uri.amount.should.be.a.Number();
               result.uri.amount.should.be.equal(123456789101);
               result.uri.payment_id.should.be.a.String();
-              result.uri.payment_id.should.be.equal('1020304050607080');
+              result.uri.payment_id.should.be.equal('394dc6dfc57071eb897685e27e6017c45c656758fed9a0b01627f0a644547b5b');
               result.uri.recipient_name.should.be.a.String();
               result.uri.recipient_name.should.be.equal('monerojs unit test suite');
               result.uri.tx_description.should.be.a.String();
@@ -1542,7 +1543,7 @@ describe('walletRPC constructor', () => {
 
         describe('add_address_book()', () => {
           it('should add address to address book', done => {
-            walletRPC.add_address_book(address, '1020304050607080908070605040302010203040506070809080706050403020', 'monerojs unit test suite address book entry')
+            walletRPC.add_address_book(address, '394dc6dfc57071eb897685e27e6017c45c656758fed9a0b01627f0a644547b5b', 'monerojs unit test suite address book entry')
             .then(result => {
               result.should.be.a.Object();
               result.index.should.be.a.Number();
@@ -1566,7 +1567,7 @@ describe('walletRPC constructor', () => {
               result.entries[0].index.should.be.a.Number();
               result.entries[0].index.should.be.equal(address_book_index);
               result.entries[0].payment_id.should.be.a.String();
-              result.entries[0].payment_id.should.be.equal('1020304050607080908070605040302010203040506070809080706050403020');
+              result.entries[0].payment_id.should.be.equal('394dc6dfc57071eb897685e27e6017c45c656758fed9a0b01627f0a644547b5b');
             })
             .then(done, done);
           });
@@ -1825,7 +1826,7 @@ describe('walletRPC constructor', () => {
         // TODO refresh wallet
 
         describe('a. getbalance()', () => {
-          it('should retrieve the account balance', done => {
+          it('should retrieve the 2/2 multisig wallet balance', done => {
             walletRPC.getbalance()
             .then(result => {
               result.should.be.a.Object();
@@ -1837,7 +1838,7 @@ describe('walletRPC constructor', () => {
                 if (multisig_balance_22_a <= 0) {
                   // TODO request funding from faucet
                   describe('check wallet balance...', () => {
-                    it(`it should only test transfer methods if ${network}_multisig_wallet_2-2_a has balance`, done => {
+                    it('it should only test transfer methods if the 2/2 multisig wallet has balance', done => {
                       done();
                     });
                   });
@@ -1882,7 +1883,7 @@ describe('walletRPC constructor', () => {
                   let address = '';
 
                   describe('b. getaddress()', () => {
-                    it(`should return ${network}_multisig_wallet_2-2_b's address`, done => {
+                    it(`should return the 2/2 multisig wallet's address`, done => {
                       walletRPC.getaddress()
                       .then(result => {
                         result.should.be.a.Object();
@@ -1911,7 +1912,7 @@ describe('walletRPC constructor', () => {
                   let multisig_txset_22_b = ''
 
                   describe('b. transfer()', () => {
-                    it(`should generate transaction from ${network}_multisig_wallet_2-2_b`, done => {
+                    it('should generate transaction from 2/2 multisig wallet', done => {
                       walletRPC.transfer({
                         address: address,
                         amount: 0.1,
@@ -1952,7 +1953,7 @@ describe('walletRPC constructor', () => {
                   let multisig_tx_data_hex = '';
 
                   describe('a. sign_multisig()', () => {
-                    it(`should sign multisig transaction from ${network}_multisig_wallet_2-2_b`, done => {
+                    it('should sign multisig transaction from 2/2 multisig wallet', done => {
                       walletRPC.sign_multisig(multisig_txset_22_b)
                       .then(result => {
                         result.should.be.a.Object();
@@ -1966,7 +1967,7 @@ describe('walletRPC constructor', () => {
                   });
 
                   describe('a. submit_multisig()', () => {
-                    it('should submit multisignature transaction', done => {
+                    it('should submit 2/2 multisig transaction', done => {
                       walletRPC.submit_multisig(multisig_tx_data_hex)
                       .then(result => {
                         result.should.be.a.Object();
