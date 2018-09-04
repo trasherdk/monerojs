@@ -1431,7 +1431,7 @@ describe('walletRPC constructor', () => {
 
         describe('make_integrated_address()', () => {
           it('should make integrated address', done => {
-            walletRPC.make_integrated_address('394dc6dfc57071eb')
+            walletRPC.make_integrated_address(address, '394dc6dfc57071eb')
             .then(result => {
               result.should.be.a.Object();
               result.payment_id.should.be.a.String();
