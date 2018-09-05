@@ -748,6 +748,20 @@ describe('walletRPC constructor', () => {
           });
         });
 
+        describe('change_wallet_password()', () => {
+          it(`should change wallet password to 'monerojs' and back (to '')`, done => {
+            walletRPC.change_wallet_password('', 'monerojs')
+            .then(result => {
+              result.should.be.a.Object();
+              walletRPC.change_wallet_password('monerjs', '')
+              .then(result => {
+                result.should.be.a.Object();
+              })
+              .then(done, done);
+            });
+          });
+        });
+
         let height = 0;
 
         describe('get_height()', () => {
