@@ -174,7 +174,51 @@ describe('daemonRPC constructor', () => {
           });
         });
 
-        // TODO test submitblock
+        let block_blob = '';
+
+        describe('generateblocks()', () => {
+          let address = '';
+          if (network == 'mainnet') {
+            address = '44AFFq5kSiGBoZ4NMDwYtN18obc8AemS33DBLWs3H7otXft3XjrpDtQGv7SqSsaBYBb98uNbr2VBBEt7f2wfn3RVGQBEP3A';
+          } else if (network == 'testnet') {
+            address = '9sykYqd8soGa9Fv8zDMdt2gN8z2Aj5qQeBNpXjxRowkyCoWCYxa3xumYQe5MmQJuFN5CVTQwK2gqtfBNsFqa16gp1L4uGBU';
+          } else if (network == 'stagenet') {
+            address = '56Gpz2CeLbq1KT6eTHCqH43StT8kh7WQs9ji8wmECS7WUAx85FHrRztebp48wgEt6kcRbTpvBhnktEyDHVhe7xjbTAzALiY';
+          }
+
+          it('should generate a block', done => {
+            daemonRPC.generateblocks(address, 255, 1)
+            .then(result => {
+              result.should.be.a.Object();
+              result.status.should.be.a.String();
+              result.status.should.be.equal('OK');
+              result.blockhashing_blob.should.be.a.String();
+              result.blocktemplate_blob.should.be.a.String();
+              block_blob = result.blocktemplate_blob;
+              result.difficulty.should.be.a.Number();
+              result.expected_reward.should.be.a.Number();
+              result.height.should.be.a.Number();
+              result.prev_hash.should.be.a.String();
+              result.reserved_offset.should.be.a.Number();
+              result.untrusted.should.be.a.Boolean();
+            })
+            .then(done, done);
+          });
+        });
+
+        // Would work, but generateblocks() doesn't do proper hashing on blocks.
+        // describe('submit_block()', () => {
+        //   it('should submit a block', done => {
+        //     daemonRPC.submit_block(block_blob)
+        //     .then(result => {
+        //       result.should.be.a.Object();
+        //       console.log(result);
+        //       result.status.should.be.a.String();
+        //       result.status.should.be.eqaul('OK');
+        //     })
+        //     .then(done, done);
+        //   });
+        // });
 
         describe('getlastblockheader()', () => {
           it('should return block header', done => {
