@@ -1040,6 +1040,9 @@ describe('walletRPC constructor', () => {
                     .timeout(6000);
                   });
 
+                  // TODO sign_transfer
+                  // .. probably need to create a read-only wallet to test this.
+
                   describe('daemonRPC transfer methods constructor', () => {
                     // TODO connect to fastest daemon from test above
                     it('should connect to daemon', done => {
