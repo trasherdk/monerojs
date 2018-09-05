@@ -335,21 +335,6 @@ describe('daemonRPC constructor', () => {
           });
         });
 
-        describe('get_outs()', () => {
-          it('should get output info', done => {
-            daemonRPC.get_outs([{ index: 77777 }])
-            .then(result => {
-              result.should.be.a.Object();
-              result.status.should.be.a.String();
-              result.status.should.be.equal('OK');
-              result.outs.should.be.a.Array();
-              result.outs[0].should.be.a.Object();
-              result.outs[0].key.should.be.a.String();
-            })
-            .then(done, done);
-          });
-        });
-
         describe('hard_fork_info()', () => {
           it('should get hard info', done => {
             daemonRPC.hard_fork_info()
@@ -668,20 +653,23 @@ describe('daemonRPC constructor', () => {
               .then(done, done);
             });
           });
-        }
-
-        describe('get_outs()', () => {
-          it('should get output info', done => {
-            daemonRPC.get_outs([{ index: 77777 }])
-            .then(result => {
-              result.should.be.a.Object();
-              result.status.should.be.a.String();
-              result.status.should.be.equal('OK');
-              result.outs.should.be.a.Array();
-              result.outs[0].should.be.a.Object();
-              result.outs[0].key.should.be.a.String();
-            })
-            .then(done, done);
+          
+          describe('update()', () => {
+            it('should check for update', done => {
+              daemonRPC.update('check', '.')
+              .then(result => {
+                result.should.be.a.Object();
+                result.auto_uri.should.be.a.String();
+                result.hash.should.be.a.String();
+                result.path.should.be.a.String();
+                result.status.should.be.a.String();
+                // TODO check that status is 'OK'
+                result.update.should.be.a.Boolean();
+                result.user_uri.should.be.a.String();
+                result.version.should.be.a.String();
+              })
+              .then(done, done);
+            });
           });
 
           // // Make sure to test stop_daemon() last
@@ -697,6 +685,21 @@ describe('daemonRPC constructor', () => {
           //     .then(done, done);
           //   });
           // });
+        }
+
+        describe('get_outs()', () => {
+          it('should get output info', done => {
+            daemonRPC.get_outs([{ index: 77777 }])
+            .then(result => {
+              result.should.be.a.Object();
+              result.status.should.be.a.String();
+              result.status.should.be.equal('OK');
+              result.outs.should.be.a.Array();
+              result.outs[0].should.be.a.Object();
+              result.outs[0].key.should.be.a.String();
+            })
+            .then(done, done);
+          });
         });
       });
     })
