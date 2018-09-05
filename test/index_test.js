@@ -747,7 +747,32 @@ describe('walletRPC constructor', () => {
           });
         });
 
-        // TODO refresh wallet
+        let height = 0;
+
+        describe('get_height()', () => {
+          it('should get wallet height', done => {
+            walletRPC.get_height()
+            .then(result => {
+              result.should.be.a.Object();
+              result.height.should.be.a.Number();
+
+              height = result.height;
+            })
+            .then(done, done);
+          });
+        });
+
+        describe('refresh()', () => {
+          it('should refresh wallet', done => {
+            walletRPC.refresh(height)
+            .then(result => {
+              result.should.be.a.Object();
+              result.blocks_fetched.should.be.a.Number();
+              result.received_money.should.be.a.Boolean();
+            })
+            .then(done, done);
+          });
+        });
 
         let address = '';
 
@@ -761,21 +786,6 @@ describe('walletRPC constructor', () => {
               result.addresses[0].should.be.a.Object();
               result.addresses[0].address_index.should.be.a.Number();
               address = result.address;
-            })
-            .then(done, done);
-          });
-        });
-
-        let height = 0;
-
-        describe('get_height()', () => {
-          it('should get wallet height', done => {
-            walletRPC.get_height()
-            .then(result => {
-              result.should.be.a.Object();
-              result.height.should.be.a.Number();
-
-              height = result.height;
             })
             .then(done, done);
           });
@@ -843,7 +853,30 @@ describe('walletRPC constructor', () => {
                     });
                   });
 
-                  // TODO refresh wallet
+                  describe('get_height()', () => {
+                    it('should get wallet height', done => {
+                      walletRPC.get_height()
+                      .then(result => {
+                        result.should.be.a.Object();
+                        result.height.should.be.a.Number();
+
+                        height = result.height;
+                      })
+                      .then(done, done);
+                    });
+                  });
+
+                  describe('refresh()', () => {
+                    it('should refresh wallet', done => {
+                      walletRPC.refresh(height)
+                      .then(result => {
+                        result.should.be.a.Object();
+                        result.blocks_fetched.should.be.a.Number();
+                        result.received_money.should.be.a.Boolean();
+                      })
+                      .then(done, done);
+                    });
+                  });
 
                   let tx_blob = '';
                   let tx_metadata = '';
@@ -1876,9 +1909,34 @@ describe('walletRPC constructor', () => {
           });
         });
 
-        let multisig_balance_22_a = 0;
+        let height = 0;
 
-        // TODO refresh wallet
+        describe('a. get_height()', () => {
+          it('should get wallet height', done => {
+            walletRPC.get_height()
+            .then(result => {
+              result.should.be.a.Object();
+              result.height.should.be.a.Number();
+
+              height = result.height;
+            })
+            .then(done, done);
+          });
+        });
+
+        describe('a. refresh()', () => {
+          it('should refresh wallet', done => {
+            walletRPC.refresh(height)
+            .then(result => {
+              result.should.be.a.Object();
+              result.blocks_fetched.should.be.a.Number();
+              result.received_money.should.be.a.Boolean();
+            })
+            .then(done, done);
+          });
+        });
+
+        let multisig_balance_22_a = 0;
 
         describe('a. getbalance()', () => {
           it('should retrieve the 2/2 multisig wallet balance', done => {
@@ -1908,7 +1966,32 @@ describe('walletRPC constructor', () => {
                     });
                   });
 
-                  // TODO refresh wallet
+                  let height = 0;
+
+                  describe('a. get_height()', () => {
+                    it('should get wallet height', done => {
+                      walletRPC.get_height()
+                      .then(result => {
+                        result.should.be.a.Object();
+                        result.height.should.be.a.Number();
+
+                        height = result.height;
+                      })
+                      .then(done, done);
+                    });
+                  });
+
+                  describe('a. refresh()', () => {
+                    it('should refresh wallet', done => {
+                      walletRPC.refresh(height)
+                      .then(result => {
+                        result.should.be.a.Object();
+                        result.blocks_fetched.should.be.a.Number();
+                        result.received_money.should.be.a.Boolean();
+                      })
+                      .then(done, done);
+                    });
+                  });
 
                   describe('a. export_multisig_info()', () => {
                     it('should export multisig info', done => {
@@ -1933,7 +2016,30 @@ describe('walletRPC constructor', () => {
                     });
                   });
 
-                  // TODO refresh wallet
+                  describe('b. get_height()', () => {
+                    it('should get wallet height', done => {
+                      walletRPC.get_height()
+                      .then(result => {
+                        result.should.be.a.Object();
+                        result.height.should.be.a.Number();
+
+                        height = result.height;
+                      })
+                      .then(done, done);
+                    });
+                  });
+
+                  describe('b. refresh()', () => {
+                    it('should refresh wallet', done => {
+                      walletRPC.refresh(height)
+                      .then(result => {
+                        result.should.be.a.Object();
+                        result.blocks_fetched.should.be.a.Number();
+                        result.received_money.should.be.a.Boolean();
+                      })
+                      .then(done, done);
+                    });
+                  });
 
                   let address = '';
 
@@ -2373,7 +2479,32 @@ describe('walletRPC constructor', () => {
           });
         });
 
-        // TODO refresh wallet
+        let height = 0;
+
+        describe('b. get_height()', () => {
+          it('should get wallet height', done => {
+            walletRPC.get_height()
+            .then(result => {
+              result.should.be.a.Object();
+              result.height.should.be.a.Number();
+
+              height = result.height;
+            })
+            .then(done, done);
+          });
+        });
+
+        describe('b. refresh()', () => {
+          it('should refresh wallet', done => {
+            walletRPC.refresh(height)
+            .then(result => {
+              result.should.be.a.Object();
+              result.blocks_fetched.should.be.a.Number();
+              result.received_money.should.be.a.Boolean();
+            })
+            .then(done, done);
+          });
+        });
 
         let multisig_balance_23_b = '';
 
@@ -2405,7 +2536,32 @@ describe('walletRPC constructor', () => {
                     });
                   });
 
-                  // TODO refresh wallet
+                  let height = 0;
+
+                  describe('a. get_height()', () => {
+                    it('should get wallet height', done => {
+                      walletRPC.get_height()
+                      .then(result => {
+                        result.should.be.a.Object();
+                        result.height.should.be.a.Number();
+
+                        height = result.height;
+                      })
+                      .then(done, done);
+                    });
+                  });
+
+                  describe('a. refresh()', () => {
+                    it('should refresh wallet', done => {
+                      walletRPC.refresh(height)
+                      .then(result => {
+                        result.should.be.a.Object();
+                        result.blocks_fetched.should.be.a.Number();
+                        result.received_money.should.be.a.Boolean();
+                      })
+                      .then(done, done);
+                    });
+                  });
 
                   describe('a. export_multisig_info()', () => {
                     it('should export multisig info', done => {
@@ -2430,7 +2586,30 @@ describe('walletRPC constructor', () => {
                     });
                   });
 
-                  // TODO refresh wallet
+                  describe('b. get_height()', () => {
+                    it('should get wallet height', done => {
+                      walletRPC.get_height()
+                      .then(result => {
+                        result.should.be.a.Object();
+                        result.height.should.be.a.Number();
+
+                        height = result.height;
+                      })
+                      .then(done, done);
+                    });
+                  });
+
+                  describe('b. refresh()', () => {
+                    it('should refresh wallet', done => {
+                      walletRPC.refresh(height)
+                      .then(result => {
+                        result.should.be.a.Object();
+                        result.blocks_fetched.should.be.a.Number();
+                        result.received_money.should.be.a.Boolean();
+                      })
+                      .then(done, done);
+                    });
+                  });
 
                   describe('b. export_multisig_info()', () => {
                     it('should export multisig info', done => {
@@ -2455,7 +2634,30 @@ describe('walletRPC constructor', () => {
                     });
                   });
 
-                  // TODO refresh wallet
+                  describe('c. get_height()', () => {
+                    it('should get wallet height', done => {
+                      walletRPC.get_height()
+                      .then(result => {
+                        result.should.be.a.Object();
+                        result.height.should.be.a.Number();
+
+                        height = result.height;
+                      })
+                      .then(done, done);
+                    });
+                  });
+
+                  describe('c. refresh()', () => {
+                    it('should refresh wallet', done => {
+                      walletRPC.refresh(height)
+                      .then(result => {
+                        result.should.be.a.Object();
+                        result.blocks_fetched.should.be.a.Number();
+                        result.received_money.should.be.a.Boolean();
+                      })
+                      .then(done, done);
+                    });
+                  });
 
                   let address = '';
 
