@@ -742,6 +742,7 @@ describe('walletRPC constructor', () => {
             walletRPC.open_wallet(`${network}_wallet`)
             .then(result => {
               result.should.be.a.Object();
+              // error: { code: -1, message: 'Failed to open wallet' } if wallet is already open?
             })
             .then(done, done);
           });
