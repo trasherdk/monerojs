@@ -869,6 +869,32 @@ describe('walletRPC constructor', () => {
           .timeout(6000);
         });
 
+        let outputs_data_hex = '';
+
+        describe('export_outputs()', () => {
+          it('should export wallet outputs', done => {
+            walletRPC.export_outputs()
+            .then(result => {
+              result.should.be.a.Object();
+              result.outputs_data_hex.should.be.a.String();
+              outputs_data_hex = result.outputs_data_hex;
+            })
+            .then(done, done);
+          });
+        });
+
+        describe('import_outputs()', () => {
+          it('should import wallet outputs', done => {
+            walletRPC.import_outputs(outputs_data_hex)
+            .then(result => {
+              result.should.be.a.Object();
+              result.num_imported.should.be.a.Number();
+            })
+            .then(done, done);
+          })
+          .timeout(6000);
+        });
+
         let balance = 0;
 
         describe('getbalance()', () => {
