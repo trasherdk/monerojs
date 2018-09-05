@@ -1740,6 +1740,17 @@ describe('walletRPC constructor', () => {
           .timeout(60000);
         });
 
+        describe('get_version()', () => {
+          it('should get wallet version', done => {
+            walletRPC.get_version()
+            .then(result => {
+              result.should.be.a.Object();
+              result.version.should.be.a.Number();
+            })
+            .then(done, done);
+          });
+        });
+
         // // Destroys wallet cache
         // describe('rescan_blockchain()', () => {
         //   it('should rescan blockchain', done => {
