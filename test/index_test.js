@@ -806,6 +806,38 @@ describe('walletRPC constructor', () => {
           });
         });
 
+        let subaddress = '';
+        let address_index = 0;
+
+        describe('create_address()', () => {
+          it('should create new subaddress', done => {
+            walletRPC.create_address(0, 'monerojs unit test suite')
+            .then(result => {
+              result.should.be.a.Object();
+              result.address.should.be.a.String();
+              subaddress = result.address;
+              result.address_index.should.be.a.Number();
+              address_index = result.address_index;
+            })
+            .then(done, done);
+          });
+        });
+
+        describe('get_address_index()', () => {
+          it('should return the index of the wallet subaddress that was just created', done => {
+            walletRPC.get_address_index(subaddress)
+            .then(result => {
+              result.should.be.a.Object();
+              result.index.should.be.a.Object();
+              result.index.major.should.be.a.Number();
+              result.index.major.should.be.equal(0);
+              result.index.minor.should.be.a.Number();
+              result.index.minor.should.be.equal(address_index);
+            })
+            .then(done, done);
+          });
+        });
+
         let key_images = [];
 
         describe('export_key_images()', () => {
@@ -1346,21 +1378,6 @@ describe('walletRPC constructor', () => {
                   });
                 }
               });
-            })
-            .then(done, done);
-          });
-        });
-
-        let address_index = 0;
-
-        describe('create_address()', () => {
-          it('should create new subaddress', done => {
-            walletRPC.create_address(0, 'monerojs unit test suite')
-            .then(result => {
-              result.should.be.a.Object();
-              result.address.should.be.a.String();
-              result.address_index.should.be.a.Number();
-              address_index = result.address_index;
             })
             .then(done, done);
           });
