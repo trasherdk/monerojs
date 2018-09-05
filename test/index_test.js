@@ -881,11 +881,25 @@ describe('walletRPC constructor', () => {
                     .timeout(5000);
                   });
 
+                  describe('relay_tx()', () => {
+                    it('should relay transaction', done => {
+                      walletRPC.relay_tx(tx_metadata)
+                      .then(result => {
+                        result.should.be.a.Object();
+                        result.fee.should.be.a.Number();
+                        result.tx_blob.should.be.a.String();
+                        result.tx_hash.should.be.a.String();
+                        result.tx_key.should.be.a.String();
+                      })
+                      .then(done, done);
+                    });
+                  });
+
                   describe('transfer_split()', () => {
                     it('should generate potentially-split transaction', done => {
                       walletRPC.transfer_split({
                         address: address,
-                        amount: balance - balance/10,
+                        amount: (balance - balance/10) / 1000000000000,
                         mixin: 6,
                         get_tx_keys: true,
                         account_index: 0,
@@ -908,12 +922,54 @@ describe('walletRPC constructor', () => {
                         result.tx_key_list[0].should.be.a.String();
                         result.tx_blob_list.should.be.a.Array();
                         result.tx_blob_list[0].should.be.a.String();
+                        tx_blob = result.tx_blob_list[0];
                         result.tx_metadata_list.should.be.a.Array();
                         result.tx_metadata_list[0].should.be.a.String();
                       })
                       .then(done, done);
                     })
                     .timeout(6000);
+                  });
+
+                  describe('daemonRPC transfer methods constructor', () => {
+                    // TODO connect to fastest daemon from test above
+                    it('should connect to daemon', done => {
+                      var daemonRPC = new Monero.daemonRPC({ autoconnect: true, random: true, network: network })
+                      .then(daemon => {
+                        daemon.should.be.a.Object();
+
+                        describe('daemonRPC transfer methods', () => {
+                          describe('send_raw_transaction()', () => {
+                            it('should send a raw transaction', done => {
+                              daemon.send_raw_transaction(tx_blob, true)
+                              .then(result => {
+                                result.should.be.a.Object();
+                                console.log(result);
+                                result.double_spend.should.be.a.Boolean();
+                                result.fee_too_low.should.be.a.Boolean();
+                                result.invalid_input.should.be.a.Boolean();
+                                result.invalid_output.should.be.a.Boolean();
+                                result.low_mixin.should.be.a.Boolean();
+                                result.not_rct.should.be.a.Boolean();
+                                result.not_relayed.should.be.a.Boolean();
+                                result.overspend.should.be.a.Boolean();
+                                result.reason.should.be.a.String();
+                                result.reason.should.be.equal('Not relayed');
+                                result.status.should.be.a.String();
+                                result.status.should.be.equal('OK');
+                                result.too_big.should.be.a.Boolean();
+                                result.untrusted.should.be.a.Boolean();
+                              })
+                              .then(done, done);
+                            });
+                          });
+                        });
+                      })
+                      .catch(error => {
+                        // TODO handle error
+                      })
+                      .then(done, done);
+                    });
                   });
 
                   describe('sweep_dust()', () => {
@@ -1005,20 +1061,6 @@ describe('walletRPC constructor', () => {
                       .then(done, done);
                     })
                     .timeout(9000);
-                  });
-
-                  describe('relay_tx()', () => {
-                    it('should relay transaction', done => {
-                      walletRPC.relay_tx(tx_metadata)
-                      .then(result => {
-                        result.should.be.a.Object();
-                        result.fee.should.be.a.Number();
-                        result.tx_blob.should.be.a.String();
-                        result.tx_hash.should.be.a.String();
-                        result.tx_key.should.be.a.String();
-                      })
-                      .then(done, done);
-                    });
                   });
 
                   // TODO request faucet transaction with this payment ID
