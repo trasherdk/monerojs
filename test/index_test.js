@@ -427,11 +427,23 @@ describe('daemonRPC constructor', () => {
           });
         });
 
-        // TODO test send_raw_transaction
-
         describe('get_transaction_pool()', () => {
           it('should get transaction pool info', done => {
             daemonRPC.get_transaction_pool()
+            .then(result => {
+              if (typeof result == 'string')
+                result = JSON.parse(result);
+              result.should.be.a.Object();
+              result.status.should.be.a.String();
+              result.status.should.be.equal('OK');
+            })
+            .then(done, done);
+          });
+        });
+
+        describe('get_transaction_pool_hashes()', () => {
+          it('should get hashes of transactions in pool', done => {
+            daemonRPC.get_transaction_pool_hashes()
             .then(result => {
               if (typeof result == 'string')
                 result = JSON.parse(result);
@@ -447,7 +459,8 @@ describe('daemonRPC constructor', () => {
           it('should get transaction pool stats', done => {
             daemonRPC.get_transaction_pool_stats()
             .then(result => {
-              result.should.be.a.Object();
+              if (typeof result == 'string')
+                result = JSON.parse(result);
               result.should.be.a.Object();
               result.status.should.be.a.String();
               result.status.should.be.equal('OK');
