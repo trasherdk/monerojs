@@ -174,52 +174,6 @@ describe('daemonRPC constructor', () => {
           });
         });
 
-        let block_blob = '';
-
-        describe('generateblocks()', () => {
-          let address = '';
-          if (network == 'mainnet') {
-            address = '44AFFq5kSiGBoZ4NMDwYtN18obc8AemS33DBLWs3H7otXft3XjrpDtQGv7SqSsaBYBb98uNbr2VBBEt7f2wfn3RVGQBEP3A';
-          } else if (network == 'testnet') {
-            address = '9sykYqd8soGa9Fv8zDMdt2gN8z2Aj5qQeBNpXjxRowkyCoWCYxa3xumYQe5MmQJuFN5CVTQwK2gqtfBNsFqa16gp1L4uGBU';
-          } else if (network == 'stagenet') {
-            address = '56Gpz2CeLbq1KT6eTHCqH43StT8kh7WQs9ji8wmECS7WUAx85FHrRztebp48wgEt6kcRbTpvBhnktEyDHVhe7xjbTAzALiY';
-          }
-
-          it('should generate a block', done => {
-            daemonRPC.generateblocks(address, 255, 1)
-            .then(result => {
-              result.should.be.a.Object();
-              result.status.should.be.a.String();
-              result.status.should.be.equal('OK');
-              result.blockhashing_blob.should.be.a.String();
-              result.blocktemplate_blob.should.be.a.String();
-              block_blob = result.blocktemplate_blob;
-              result.difficulty.should.be.a.Number();
-              result.expected_reward.should.be.a.Number();
-              result.height.should.be.a.Number();
-              result.prev_hash.should.be.a.String();
-              result.reserved_offset.should.be.a.Number();
-              result.untrusted.should.be.a.Boolean();
-            })
-            .then(done, done);
-          });
-        });
-
-        // Would work, but generateblocks() doesn't do proper hashing on blocks.
-        // describe('submit_block()', () => {
-        //   it('should submit a block', done => {
-        //     daemonRPC.submit_block(block_blob)
-        //     .then(result => {
-        //       result.should.be.a.Object();
-        //       console.log(result);
-        //       result.status.should.be.a.String();
-        //       result.status.should.be.eqaul('OK');
-        //     })
-        //     .then(done, done);
-        //   });
-        // });
-
         describe('getlastblockheader()', () => {
           it('should return block header', done => {
             daemonRPC.getlastblockheader()
@@ -580,6 +534,91 @@ describe('daemonRPC constructor', () => {
               .then(done, done);
             });
           });
+
+          let block_blob = '';
+
+          describe('generateblocks()', () => {
+            let address = '';
+            if (network == 'mainnet') {
+              address = '44AFFq5kSiGBoZ4NMDwYtN18obc8AemS33DBLWs3H7otXft3XjrpDtQGv7SqSsaBYBb98uNbr2VBBEt7f2wfn3RVGQBEP3A';
+            } else if (network == 'testnet') {
+              address = '9sykYqd8soGa9Fv8zDMdt2gN8z2Aj5qQeBNpXjxRowkyCoWCYxa3xumYQe5MmQJuFN5CVTQwK2gqtfBNsFqa16gp1L4uGBU';
+            } else if (network == 'stagenet') {
+              address = '56Gpz2CeLbq1KT6eTHCqH43StT8kh7WQs9ji8wmECS7WUAx85FHrRztebp48wgEt6kcRbTpvBhnktEyDHVhe7xjbTAzALiY';
+            }
+
+            it('should generate a block', done => {
+              daemonRPC.generateblocks(address, 255, 1)
+              .then(result => {
+                result.should.be.a.Object();
+                result.status.should.be.a.String();
+                result.status.should.be.equal('OK');
+                result.blockhashing_blob.should.be.a.String();
+                result.blocktemplate_blob.should.be.a.String();
+                block_blob = result.blocktemplate_blob;
+                result.difficulty.should.be.a.Number();
+                result.expected_reward.should.be.a.Number();
+                result.height.should.be.a.Number();
+                result.prev_hash.should.be.a.String();
+                result.reserved_offset.should.be.a.Number();
+                result.untrusted.should.be.a.Boolean();
+              })
+              .then(done, done);
+            });
+          });
+
+          // Would work, but generateblocks() doesn't do proper hashing on blocks.
+          // describe('submit_block()', () => {
+          //   it('should submit a block', done => {
+          //     daemonRPC.submit_block(block_blob)
+          //     .then(result => {
+          //       result.should.be.a.Object();
+          //       console.log(result);
+          //       result.status.should.be.a.String();
+          //       result.status.should.be.eqaul('OK');
+          //     })
+          //     .then(done, done);
+          //   });
+          // });
+
+          describe('set_bans()', () => {
+            it('should (un)ban peer', done => {
+              daemonRPC.set_bans({ host: '1.1.1.1', ban: false, seconds: 30 })
+              .then(result => {
+                result.should.be.a.Object();
+                result.status.should.be.a.String();
+                result.status.should.be.equal('OK');
+              })
+              .then(done, done);
+            });
+          });
+
+          describe('get_bans()', () => {
+            it('should get banned peers', done => {
+              daemonRPC.get_bans()
+              .then(result => {
+                result.should.be.a.Object();
+                result.status.should.be.a.String();
+                result.status.should.be.equal('OK');
+                // TODO look for more information
+              })
+              .then(done, done);
+            });
+          });
+
+          describe('flush_txpool()', () => {
+            it('should flush (empty) transaction pool ("mempool")', done => {
+              daemonRPC.flush_txpool()
+              .then(result => {
+                result.should.be.a.Object();
+                result.status.should.be.a.String();
+                result.status.should.be.equal('OK');
+              })
+              .then(done, done);
+            });
+          });
+
+          // TODO check for empty mempool
 
           describe('set_log_hash_rate()', () => {
             it('should set hash rate log dislay mode', done => {
