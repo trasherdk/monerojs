@@ -634,6 +634,20 @@ describe('daemonRPC constructor', () => {
             });
           });
 
+          describe('get_coinbase_tx_sum()', () => {
+            it('should get sum of coinbase rewards for first ten blocks`', done => {
+              daemonRPC.get_coinbase_tx_sum(0, 10)
+              .then(result => {
+                result.should.be.a.Object();
+                result.status.should.be.a.String();
+                result.status.should.be.equal('OK');
+                result.emission_amount.should.be.a.Number();
+                result.fee_amount.should.be.a.Number();
+              })
+              .then(done, done);
+            });
+          });
+
           describe('set_log_hash_rate()', () => {
             it('should set hash rate log dislay mode', done => {
               daemonRPC.set_log_hash_rate(true)
