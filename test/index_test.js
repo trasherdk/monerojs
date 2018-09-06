@@ -618,6 +618,25 @@ describe('daemonRPC constructor', () => {
             });
           });
 
+          describe('get_output_histogram()', () => {
+            it('should get output histogram', done => {
+              daemonRPC.get_output_histogram([20000000], 0, 100, false, 0)
+              .then(result => {
+                result.should.be.a.Object();
+                result.status.should.be.a.String();
+                result.status.should.be.equal('OK');
+                result.histogram.should.be.a.Array();
+                result.histogram[0].should.be.a.Object();
+                result.histogram[0].amount.should.be.a.Number();
+                result.histogram[0].recent_instances.should.be.a.Number();
+                result.histogram[0].total_instances.should.be.a.Number();
+                result.histogram[0].unlocked_instances.should.be.a.Number();
+              })
+              .then(done, done);
+            })
+            .timeout(30000);
+          });
+
           // TODO check for empty mempool
 
           describe('get_version()', () => {
