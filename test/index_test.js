@@ -620,6 +620,20 @@ describe('daemonRPC constructor', () => {
 
           // TODO check for empty mempool
 
+          describe('get_version()', () => {
+            it('should get daemon version', done => {
+              daemonRPC.get_version()
+              .then(result => {
+                result.should.be.a.Object();
+                result.status.should.be.a.String();
+                result.status.should.be.equal('OK');
+                result.untrusted.should.be.a.Boolean();
+                result.version.should.be.a.Number();
+              })
+              .then(done, done);
+            });
+          });
+
           describe('set_log_hash_rate()', () => {
             it('should set hash rate log dislay mode', done => {
               daemonRPC.set_log_hash_rate(true)
