@@ -635,7 +635,7 @@ describe('daemonRPC constructor', () => {
           });
 
           describe('get_coinbase_tx_sum()', () => {
-            it('should get sum of coinbase rewards for first ten blocks`', done => {
+            it('should get sum of coinbase rewards for first ten blocks', done => {
               daemonRPC.get_coinbase_tx_sum(0, 10)
               .then(result => {
                 result.should.be.a.Object();
@@ -643,6 +643,20 @@ describe('daemonRPC constructor', () => {
                 result.status.should.be.equal('OK');
                 result.emission_amount.should.be.a.Number();
                 result.fee_amount.should.be.a.Number();
+              })
+              .then(done, done);
+            });
+          });
+
+          describe('get_fee_estimate()', () => {
+            it('should get fee estimate', done => {
+              daemonRPC.get_fee_estimate(10)
+              .then(result => {
+                result.should.be.a.Object();
+                result.status.should.be.a.String();
+                result.status.should.be.equal('OK');
+                result.fee.should.be.a.Number();
+                result.untrusted.should.be.a.Boolean();
               })
               .then(done, done);
             });
