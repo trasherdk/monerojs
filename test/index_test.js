@@ -693,6 +693,20 @@ describe('daemonRPC constructor', () => {
             });
           });
 
+          describe('get_txpool_backlog()', () => {
+            it('should get transaction pool backlog', done => {
+              daemonRPC.get_txpool_backlog()
+              .then(result => {
+                console.log(result);
+                result.should.be.a.Object();
+                result.status.should.be.a.String();
+                result.status.should.be.equal('OK');
+                // TODO handle more information
+              })
+              .then(done, done);
+            });
+          });
+
           describe('get_output_distribution()', () => {
             it('should get output distribution of first one hundred blocks', done => {
               daemonRPC.get_output_distribution([17592186044415], true, 0, 10)
