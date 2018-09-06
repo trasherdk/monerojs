@@ -666,12 +666,29 @@ describe('daemonRPC constructor', () => {
             it('should get alternate chains', done => {
               daemonRPC.get_alternate_chains()
               .then(result => {
-                console.log(result);
                 result.should.be.a.Object();
                 result.status.should.be.a.String();
                 result.status.should.be.equal('OK');
                 // TODO handle more information
               })
+              .then(done, done);
+            });
+          });
+
+          describe('sync_info()', () => {
+            it('should get synchronization information', done => {
+              daemonRPC.sync_info()
+              .then(result => {
+                result.should.be.a.Object();
+                result.status.should.be.a.String();
+                result.status.should.be.equal('OK');
+                result.height.should.be.a.Number();
+                result.peers.should.be.a.Array();
+                result.peers[0].should.be.a.Object();
+                result.peers[0].info.should.be.a.Object();
+                result.peers[0].info.address.should.be.a.String();
+                result.target_height.should.be.a.Number();
+                })
               .then(done, done);
             });
           });
