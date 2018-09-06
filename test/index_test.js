@@ -662,6 +662,20 @@ describe('daemonRPC constructor', () => {
             });
           });
 
+          describe('get_alternate_chains()', () => {
+            it('should get alternate chains', done => {
+              daemonRPC.get_alternate_chains()
+              .then(result => {
+                console.log(result);
+                result.should.be.a.Object();
+                result.status.should.be.a.String();
+                result.status.should.be.equal('OK');
+                // TODO handle more information
+              })
+              .then(done, done);
+            });
+          });
+
           describe('set_log_hash_rate()', () => {
             it('should set hash rate log dislay mode', done => {
               daemonRPC.set_log_hash_rate(true)
