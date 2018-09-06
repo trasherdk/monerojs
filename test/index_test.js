@@ -688,7 +688,21 @@ describe('daemonRPC constructor', () => {
                 result.peers[0].info.should.be.a.Object();
                 result.peers[0].info.address.should.be.a.String();
                 result.target_height.should.be.a.Number();
-                })
+              })
+              .then(done, done);
+            });
+          });
+
+          describe('get_output_distribution()', () => {
+            it('should get output distribution of first one hundred blocks', done => {
+              daemonRPC.get_output_distribution([17592186044415], true, 0, 10)
+              .then(result => {
+                if (typeof result == 'string')
+                  result = JSON.parse(result);
+                result.should.be.a.Object();
+                result.status.should.be.a.String();
+                result.status.should.be.equal('OK');
+              })
               .then(done, done);
             });
           });
