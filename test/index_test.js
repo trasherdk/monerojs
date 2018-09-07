@@ -174,8 +174,6 @@ describe('daemonRPC constructor', () => {
           });
         });
 
-        // TODO test submitblock
-
         describe('getlastblockheader()', () => {
           it('should return block header', done => {
             daemonRPC.getlastblockheader()
@@ -427,11 +425,23 @@ describe('daemonRPC constructor', () => {
           });
         });
 
-        // TODO test send_raw_transaction
-
         describe('get_transaction_pool()', () => {
           it('should get transaction pool info', done => {
             daemonRPC.get_transaction_pool()
+            .then(result => {
+              if (typeof result == 'string')
+                result = JSON.parse(result);
+              result.should.be.a.Object();
+              result.status.should.be.a.String();
+              result.status.should.be.equal('OK');
+            })
+            .then(done, done);
+          });
+        });
+
+        describe('get_transaction_pool_hashes()', () => {
+          it('should get hashes of transactions in pool', done => {
+            daemonRPC.get_transaction_pool_hashes()
             .then(result => {
               if (typeof result == 'string')
                 result = JSON.parse(result);
@@ -447,7 +457,8 @@ describe('daemonRPC constructor', () => {
           it('should get transaction pool stats', done => {
             daemonRPC.get_transaction_pool_stats()
             .then(result => {
-              result.should.be.a.Object();
+              if (typeof result == 'string')
+                result = JSON.parse(result);
               result.should.be.a.Object();
               result.status.should.be.a.String();
               result.status.should.be.equal('OK');
@@ -519,6 +530,211 @@ describe('daemonRPC constructor', () => {
                 result.status.should.be.a.String();
                 result.status.should.be.equal('OK');
                 result.speed.should.be.a.Number();
+              })
+              .then(done, done);
+            });
+          });
+
+          let block_blob = '';
+
+          describe('generateblocks()', () => {
+            let address = '';
+            if (network == 'mainnet') {
+              address = '44AFFq5kSiGBoZ4NMDwYtN18obc8AemS33DBLWs3H7otXft3XjrpDtQGv7SqSsaBYBb98uNbr2VBBEt7f2wfn3RVGQBEP3A';
+            } else if (network == 'testnet') {
+              address = '9sykYqd8soGa9Fv8zDMdt2gN8z2Aj5qQeBNpXjxRowkyCoWCYxa3xumYQe5MmQJuFN5CVTQwK2gqtfBNsFqa16gp1L4uGBU';
+            } else if (network == 'stagenet') {
+              address = '56Gpz2CeLbq1KT6eTHCqH43StT8kh7WQs9ji8wmECS7WUAx85FHrRztebp48wgEt6kcRbTpvBhnktEyDHVhe7xjbTAzALiY';
+            }
+
+            it('should generate a block', done => {
+              daemonRPC.generateblocks(address, 255, 1)
+              .then(result => {
+                result.should.be.a.Object();
+                result.status.should.be.a.String();
+                result.status.should.be.equal('OK');
+                result.blockhashing_blob.should.be.a.String();
+                result.blocktemplate_blob.should.be.a.String();
+                block_blob = result.blocktemplate_blob;
+                result.difficulty.should.be.a.Number();
+                result.expected_reward.should.be.a.Number();
+                result.height.should.be.a.Number();
+                result.prev_hash.should.be.a.String();
+                result.reserved_offset.should.be.a.Number();
+                result.untrusted.should.be.a.Boolean();
+              })
+              .then(done, done);
+            });
+          });
+
+          // Would work, but generateblocks() doesn't do proper hashing on blocks.
+          // describe('submit_block()', () => {
+          //   it('should submit a block', done => {
+          //     daemonRPC.submit_block(block_blob)
+          //     .then(result => {
+          //       result.should.be.a.Object();
+          //       console.log(result);
+          //       result.status.should.be.a.String();
+          //       result.status.should.be.eqaul('OK');
+          //     })
+          //     .then(done, done);
+          //   });
+          // });
+
+          describe('set_bans()', () => {
+            it('should (un)ban peer', done => {
+              daemonRPC.set_bans({ host: '1.1.1.1', ban: false, seconds: 30 })
+              .then(result => {
+                result.should.be.a.Object();
+                result.status.should.be.a.String();
+                result.status.should.be.equal('OK');
+              })
+              .then(done, done);
+            });
+          });
+
+          describe('get_bans()', () => {
+            it('should get banned peers', done => {
+              daemonRPC.get_bans()
+              .then(result => {
+                result.should.be.a.Object();
+                result.status.should.be.a.String();
+                result.status.should.be.equal('OK');
+                // TODO look for more information
+              })
+              .then(done, done);
+            });
+          });
+
+          describe('flush_txpool()', () => {
+            it('should flush (empty) transaction pool ("mempool")', done => {
+              daemonRPC.flush_txpool()
+              .then(result => {
+                result.should.be.a.Object();
+                result.status.should.be.a.String();
+                result.status.should.be.equal('OK');
+              })
+              .then(done, done);
+            });
+          });
+
+          describe('get_output_histogram()', () => {
+            it('should get output histogram', done => {
+              daemonRPC.get_output_histogram([20000000], 0, 100, false, 0)
+              .then(result => {
+                result.should.be.a.Object();
+                result.status.should.be.a.String();
+                result.status.should.be.equal('OK');
+                result.histogram.should.be.a.Array();
+                result.histogram[0].should.be.a.Object();
+                result.histogram[0].amount.should.be.a.Number();
+                result.histogram[0].recent_instances.should.be.a.Number();
+                result.histogram[0].total_instances.should.be.a.Number();
+                result.histogram[0].unlocked_instances.should.be.a.Number();
+              })
+              .then(done, done);
+            })
+            .timeout(30000);
+          });
+
+          // TODO check for empty mempool
+
+          describe('get_version()', () => {
+            it('should get daemon version', done => {
+              daemonRPC.get_version()
+              .then(result => {
+                result.should.be.a.Object();
+                result.status.should.be.a.String();
+                result.status.should.be.equal('OK');
+                result.untrusted.should.be.a.Boolean();
+                result.version.should.be.a.Number();
+              })
+              .then(done, done);
+            });
+          });
+
+          describe('get_coinbase_tx_sum()', () => {
+            it('should get sum of coinbase rewards for first ten blocks', done => {
+              daemonRPC.get_coinbase_tx_sum(0, 10)
+              .then(result => {
+                result.should.be.a.Object();
+                result.status.should.be.a.String();
+                result.status.should.be.equal('OK');
+                result.emission_amount.should.be.a.Number();
+                result.fee_amount.should.be.a.Number();
+              })
+              .then(done, done);
+            });
+          });
+
+          describe('get_fee_estimate()', () => {
+            it('should get fee estimate', done => {
+              daemonRPC.get_fee_estimate(10)
+              .then(result => {
+                result.should.be.a.Object();
+                result.status.should.be.a.String();
+                result.status.should.be.equal('OK');
+                result.fee.should.be.a.Number();
+                result.untrusted.should.be.a.Boolean();
+              })
+              .then(done, done);
+            });
+          });
+
+          describe('get_alternate_chains()', () => {
+            it('should get alternate chains', done => {
+              daemonRPC.get_alternate_chains()
+              .then(result => {
+                result.should.be.a.Object();
+                result.status.should.be.a.String();
+                result.status.should.be.equal('OK');
+                // TODO handle more information
+              })
+              .then(done, done);
+            });
+          });
+
+          describe('sync_info()', () => {
+            it('should get synchronization information', done => {
+              daemonRPC.sync_info()
+              .then(result => {
+                result.should.be.a.Object();
+                result.status.should.be.a.String();
+                result.status.should.be.equal('OK');
+                result.height.should.be.a.Number();
+                result.peers.should.be.a.Array();
+                result.peers[0].should.be.a.Object();
+                result.peers[0].info.should.be.a.Object();
+                result.peers[0].info.address.should.be.a.String();
+                result.target_height.should.be.a.Number();
+              })
+              .then(done, done);
+            });
+          });
+
+          describe('get_txpool_backlog()', () => {
+            it('should get transaction pool backlog', done => {
+              daemonRPC.get_txpool_backlog()
+              .then(result => {
+                console.log(result);
+                result.should.be.a.Object();
+                result.status.should.be.a.String();
+                result.status.should.be.equal('OK');
+                // TODO handle more information
+              })
+              .then(done, done);
+            });
+          });
+
+          describe('get_output_distribution()', () => {
+            it('should get output distribution of first one hundred blocks', done => {
+              daemonRPC.get_output_distribution([17592186044415], true, 0, 10)
+              .then(result => {
+                if (typeof result == 'string')
+                  result = JSON.parse(result);
+                result.should.be.a.Object();
+                result.status.should.be.a.String();
+                result.status.should.be.equal('OK');
               })
               .then(done, done);
             });
@@ -767,12 +983,52 @@ describe('walletRPC constructor', () => {
             walletRPC.open_wallet(`${network}_wallet`)
             .then(result => {
               result.should.be.a.Object();
+              // error: { code: -1, message: 'Failed to open wallet' } if wallet is already open?
             })
             .then(done, done);
           });
         });
 
-        // TODO refresh wallet
+        describe('change_wallet_password()', () => {
+          it(`should change wallet password to 'monerojs' and back (to '')`, done => {
+            walletRPC.change_wallet_password('', 'monerojs')
+            .then(result => {
+              result.should.be.a.Object();
+              walletRPC.change_wallet_password('monerjs', '')
+              .then(result => {
+                result.should.be.a.Object();
+              })
+              .then(done, done);
+            });
+          });
+        });
+
+        let height = 0;
+
+        describe('get_height()', () => {
+          it('should get wallet height', done => {
+            walletRPC.get_height()
+            .then(result => {
+              result.should.be.a.Object();
+              result.height.should.be.a.Number();
+
+              height = result.height;
+            })
+            .then(done, done);
+          });
+        });
+
+        describe('refresh()', () => {
+          it('should refresh wallet', done => {
+            walletRPC.refresh(height)
+            .then(result => {
+              result.should.be.a.Object();
+              result.blocks_fetched.should.be.a.Number();
+              result.received_money.should.be.a.Boolean();
+            })
+            .then(done, done);
+          });
+        });
 
         let address = '';
 
@@ -791,16 +1047,33 @@ describe('walletRPC constructor', () => {
           });
         });
 
-        let height = 0;
+        let subaddress = '';
+        let address_index = 0;
 
-        describe('get_height()', () => {
-          it('should get wallet height', done => {
-            walletRPC.get_height()
+        describe('create_address()', () => {
+          it('should create new subaddress', done => {
+            walletRPC.create_address(0, 'monerojs unit test suite')
             .then(result => {
               result.should.be.a.Object();
-              result.height.should.be.a.Number();
+              result.address.should.be.a.String();
+              subaddress = result.address;
+              result.address_index.should.be.a.Number();
+              address_index = result.address_index;
+            })
+            .then(done, done);
+          });
+        });
 
-              height = result.height;
+        describe('get_address_index()', () => {
+          it('should return the index of the wallet subaddress that was just created', done => {
+            walletRPC.get_address_index(subaddress)
+            .then(result => {
+              result.should.be.a.Object();
+              result.index.should.be.a.Object();
+              result.index.major.should.be.a.Number();
+              result.index.major.should.be.equal(0);
+              result.index.minor.should.be.a.Number();
+              result.index.minor.should.be.equal(address_index);
             })
             .then(done, done);
           });
@@ -831,6 +1104,32 @@ describe('walletRPC constructor', () => {
               result.height.should.be.a.Number();
               result.spent.should.be.a.Number();
               result.unspent.should.be.a.Number();
+            })
+            .then(done, done);
+          })
+          .timeout(6000);
+        });
+
+        let outputs_data_hex = '';
+
+        describe('export_outputs()', () => {
+          it('should export wallet outputs', done => {
+            walletRPC.export_outputs()
+            .then(result => {
+              result.should.be.a.Object();
+              result.outputs_data_hex.should.be.a.String();
+              outputs_data_hex = result.outputs_data_hex;
+            })
+            .then(done, done);
+          });
+        });
+
+        describe('import_outputs()', () => {
+          it('should import wallet outputs', done => {
+            walletRPC.import_outputs(outputs_data_hex)
+            .then(result => {
+              result.should.be.a.Object();
+              result.num_imported.should.be.a.Number();
             })
             .then(done, done);
           })
@@ -868,7 +1167,30 @@ describe('walletRPC constructor', () => {
                     });
                   });
 
-                  // TODO refresh wallet
+                  describe('get_height()', () => {
+                    it('should get wallet height', done => {
+                      walletRPC.get_height()
+                      .then(result => {
+                        result.should.be.a.Object();
+                        result.height.should.be.a.Number();
+
+                        height = result.height;
+                      })
+                      .then(done, done);
+                    });
+                  });
+
+                  describe('refresh()', () => {
+                    it('should refresh wallet', done => {
+                      walletRPC.refresh(height)
+                      .then(result => {
+                        result.should.be.a.Object();
+                        result.blocks_fetched.should.be.a.Number();
+                        result.received_money.should.be.a.Boolean();
+                      })
+                      .then(done, done);
+                    });
+                  });
 
                   let tx_blob = '';
                   let tx_metadata = '';
@@ -958,6 +1280,9 @@ describe('walletRPC constructor', () => {
                     })
                     .timeout(6000);
                   });
+
+                  // TODO sign_transfer
+                  // .. probably need to create a read-only wallet to test this.
 
                   describe('daemonRPC transfer methods constructor', () => {
                     // TODO connect to fastest daemon from test above
@@ -1323,21 +1648,6 @@ describe('walletRPC constructor', () => {
                   });
                 }
               });
-            })
-            .then(done, done);
-          });
-        });
-
-        let address_index = 0;
-
-        describe('create_address()', () => {
-          it('should create new subaddress', done => {
-            walletRPC.create_address(0, 'monerojs unit test suite')
-            .then(result => {
-              result.should.be.a.Object();
-              result.address.should.be.a.String();
-              result.address_index.should.be.a.Number();
-              address_index = result.address_index;
             })
             .then(done, done);
           });
@@ -1717,6 +2027,17 @@ describe('walletRPC constructor', () => {
           .timeout(60000);
         });
 
+        describe('get_version()', () => {
+          it('should get wallet version', done => {
+            walletRPC.get_version()
+            .then(result => {
+              result.should.be.a.Object();
+              result.version.should.be.a.Number();
+            })
+            .then(done, done);
+          });
+        });
+
         // // Destroys wallet cache
         // describe('rescan_blockchain()', () => {
         //   it('should rescan blockchain', done => {
@@ -1901,9 +2222,34 @@ describe('walletRPC constructor', () => {
           });
         });
 
-        let multisig_balance_22_a = 0;
+        let height = 0;
 
-        // TODO refresh wallet
+        describe('a. get_height()', () => {
+          it('should get wallet height', done => {
+            walletRPC.get_height()
+            .then(result => {
+              result.should.be.a.Object();
+              result.height.should.be.a.Number();
+
+              height = result.height;
+            })
+            .then(done, done);
+          });
+        });
+
+        describe('a. refresh()', () => {
+          it('should refresh wallet', done => {
+            walletRPC.refresh(height)
+            .then(result => {
+              result.should.be.a.Object();
+              result.blocks_fetched.should.be.a.Number();
+              result.received_money.should.be.a.Boolean();
+            })
+            .then(done, done);
+          });
+        });
+
+        let multisig_balance_22_a = 0;
 
         describe('a. getbalance()', () => {
           it('should retrieve the 2/2 multisig wallet balance', done => {
@@ -1933,7 +2279,32 @@ describe('walletRPC constructor', () => {
                     });
                   });
 
-                  // TODO refresh wallet
+                  let height = 0;
+
+                  describe('a. get_height()', () => {
+                    it('should get wallet height', done => {
+                      walletRPC.get_height()
+                      .then(result => {
+                        result.should.be.a.Object();
+                        result.height.should.be.a.Number();
+
+                        height = result.height;
+                      })
+                      .then(done, done);
+                    });
+                  });
+
+                  describe('a. refresh()', () => {
+                    it('should refresh wallet', done => {
+                      walletRPC.refresh(height)
+                      .then(result => {
+                        result.should.be.a.Object();
+                        result.blocks_fetched.should.be.a.Number();
+                        result.received_money.should.be.a.Boolean();
+                      })
+                      .then(done, done);
+                    });
+                  });
 
                   describe('a. export_multisig_info()', () => {
                     it('should export multisig info', done => {
@@ -1958,7 +2329,30 @@ describe('walletRPC constructor', () => {
                     });
                   });
 
-                  // TODO refresh wallet
+                  describe('b. get_height()', () => {
+                    it('should get wallet height', done => {
+                      walletRPC.get_height()
+                      .then(result => {
+                        result.should.be.a.Object();
+                        result.height.should.be.a.Number();
+
+                        height = result.height;
+                      })
+                      .then(done, done);
+                    });
+                  });
+
+                  describe('b. refresh()', () => {
+                    it('should refresh wallet', done => {
+                      walletRPC.refresh(height)
+                      .then(result => {
+                        result.should.be.a.Object();
+                        result.blocks_fetched.should.be.a.Number();
+                        result.received_money.should.be.a.Boolean();
+                      })
+                      .then(done, done);
+                    });
+                  });
 
                   let address = '';
 
@@ -2398,7 +2792,32 @@ describe('walletRPC constructor', () => {
           });
         });
 
-        // TODO refresh wallet
+        let height = 0;
+
+        describe('b. get_height()', () => {
+          it('should get wallet height', done => {
+            walletRPC.get_height()
+            .then(result => {
+              result.should.be.a.Object();
+              result.height.should.be.a.Number();
+
+              height = result.height;
+            })
+            .then(done, done);
+          });
+        });
+
+        describe('b. refresh()', () => {
+          it('should refresh wallet', done => {
+            walletRPC.refresh(height)
+            .then(result => {
+              result.should.be.a.Object();
+              result.blocks_fetched.should.be.a.Number();
+              result.received_money.should.be.a.Boolean();
+            })
+            .then(done, done);
+          });
+        });
 
         let multisig_balance_23_b = '';
 
@@ -2430,7 +2849,32 @@ describe('walletRPC constructor', () => {
                     });
                   });
 
-                  // TODO refresh wallet
+                  let height = 0;
+
+                  describe('a. get_height()', () => {
+                    it('should get wallet height', done => {
+                      walletRPC.get_height()
+                      .then(result => {
+                        result.should.be.a.Object();
+                        result.height.should.be.a.Number();
+
+                        height = result.height;
+                      })
+                      .then(done, done);
+                    });
+                  });
+
+                  describe('a. refresh()', () => {
+                    it('should refresh wallet', done => {
+                      walletRPC.refresh(height)
+                      .then(result => {
+                        result.should.be.a.Object();
+                        result.blocks_fetched.should.be.a.Number();
+                        result.received_money.should.be.a.Boolean();
+                      })
+                      .then(done, done);
+                    });
+                  });
 
                   describe('a. export_multisig_info()', () => {
                     it('should export multisig info', done => {
@@ -2455,7 +2899,30 @@ describe('walletRPC constructor', () => {
                     });
                   });
 
-                  // TODO refresh wallet
+                  describe('b. get_height()', () => {
+                    it('should get wallet height', done => {
+                      walletRPC.get_height()
+                      .then(result => {
+                        result.should.be.a.Object();
+                        result.height.should.be.a.Number();
+
+                        height = result.height;
+                      })
+                      .then(done, done);
+                    });
+                  });
+
+                  describe('b. refresh()', () => {
+                    it('should refresh wallet', done => {
+                      walletRPC.refresh(height)
+                      .then(result => {
+                        result.should.be.a.Object();
+                        result.blocks_fetched.should.be.a.Number();
+                        result.received_money.should.be.a.Boolean();
+                      })
+                      .then(done, done);
+                    });
+                  });
 
                   describe('b. export_multisig_info()', () => {
                     it('should export multisig info', done => {
@@ -2480,7 +2947,30 @@ describe('walletRPC constructor', () => {
                     });
                   });
 
-                  // TODO refresh wallet
+                  describe('c. get_height()', () => {
+                    it('should get wallet height', done => {
+                      walletRPC.get_height()
+                      .then(result => {
+                        result.should.be.a.Object();
+                        result.height.should.be.a.Number();
+
+                        height = result.height;
+                      })
+                      .then(done, done);
+                    });
+                  });
+
+                  describe('c. refresh()', () => {
+                    it('should refresh wallet', done => {
+                      walletRPC.refresh(height)
+                      .then(result => {
+                        result.should.be.a.Object();
+                        result.blocks_fetched.should.be.a.Number();
+                        result.received_money.should.be.a.Boolean();
+                      })
+                      .then(done, done);
+                    });
+                  });
 
                   let address = '';
 
