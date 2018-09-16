@@ -5,7 +5,7 @@ This library has two main parts: a Monero daemon (`monerod`) JSON-RPC API wrappe
 
 ### Requirements
  - Node.js
- - A Monero node (remote nodes support most, but not all, methods.)
+ - A Monero (Lithium Luna 0.12) node (remote nodes support most, but not all, methods.)
 
 ## Installation
 ```bash
@@ -15,7 +15,7 @@ npm install monerojs
 
 ## Testing
 
-Install dependencies (`npm install`) and then run `npm test`
+Install dependencies (`npm install`) and then run [mocha](https://mochajs.org/) tests with `npm test`
 
 ## Usage
 
@@ -31,13 +31,16 @@ var daemonRPC = new Monero.daemonRPC({ autoconnect: true })
   daemonRPC = daemon; // Store daemon interface in global variable
   
   daemonRPC.getblockcount()
-    .then(blocks => {
-      console.log(blocks);
-    });
+  .then(blocks => {
+    console.log(blocks);
   })
-  .catch((err) => {
+  .catch(err => {
     console.error(err);
   });
+})
+.catch(err => {
+  throw new Error(err);
+});
 ```
 
 #### Connect to specific Monero daemons
@@ -53,6 +56,9 @@ const daemonRPC = new Monero.daemonRPC() // Connect with defaults
   daemonRPC.getblockcount()
   .then(height => {
     console.log(height);
+  })
+  .catch(err => {
+    console.error(err);
   });
 })
 .catch(err => {
@@ -77,23 +83,20 @@ const walletRPC = new Monero.walletRPC() // Connect with defaults
       walletRPC.getaddress()
       .then(balance => {
         console.log(balance);
+      })
+      .catch(err = {
+        console.error(err);
       });
+    })
+    .catch(err = {
+      console.error(err);
     });
+  })
+  .catch(err = {
+    console.error(err);
   });
 })
 .catch(err = {
-  console.error(err);
-});
-```
-
-#### Check if Monero wallet is available (running)
-
-```js
-var checkForLocalWalletRPC = new Monero.walletRPC({ initialize: false })
-.then(() => {
-  console.log('monero-wallet-rpc available');
-})
-.catch(error => {
-  console.error('monero-wallet-rpc is unavailable')
+  throw new Error(err);
 });
 ```
