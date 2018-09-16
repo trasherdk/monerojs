@@ -1,6 +1,6 @@
 {
   "name": "monerojs",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "description": "ES6 JavaScript Monero library",
   "main": "index.js",
   "scripts": {
@@ -8,25 +8,23 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/sneurlax/monerojs.git"
+    "url": "git+https://github.com/monerojs/monerojs.git"
   },
   "keywords": [
     "monero"
   ],
   "author": "sneurlax <sneurlax@gmail.com> (https://github.com/sneurlax)",
   "constributors": [
-    "SerHack <nico@serhack.me> (https://serhack.me)",
-    "CryptoChangements <bW9uZXJv@gmail.com> (https://github.com/cryptochangements34)",
     "sneurlax <sneurlax@gmail.com>"
   ],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/sneurlax/monerojs/issues"
+    "url": "https://github.com/monerojs/monerojs/issues"
   },
-  "homepage": "https://github.com/sneurlax/monerojs#readme",
+  "homepage": "https://github.com/monerojs/monerojs#readme",
   "dependencies": {
     "request": "^2.85.0",
-    "request-promise": "^4.2.2"
+    "request-promise-native": "^1.0.5"
   },
   "devDependencies": {
     "mocha": "^5.2.0",
