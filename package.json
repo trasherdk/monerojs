@@ -27,7 +27,7 @@
     "axios": "^0.21.1"
   },
   "devDependencies": {
-    "mocha": "^5.2.0",
+    "mocha": "^8.3.0",
     "should": "^8.3.0"
   }
 }
