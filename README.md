@@ -1,4 +1,6 @@
 # `monerojs`
+The original repo (https://github.com/monerojs/monerojs) appears to no longer be actively maintained. 
+
 A Monero library written in ES6 JavaScript
 
 This library has two main parts: a Monero daemon (`monerod`) JSON-RPC API wrapper, `daemonRPC.js`, and a Monero wallet (`monero-wallet-rpc`) JSON-RPC API wrapper, `walletRPC.js`.
@@ -9,7 +11,7 @@ This library has two main parts: a Monero daemon (`monerod`) JSON-RPC API wrappe
 
 ## Installation
 ```bash
-npm install monerojs
+npm install monerojs2
 ```
 *`--save` optional*
 

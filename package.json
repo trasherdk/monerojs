@@ -1,6 +1,6 @@
 {
-  "name": "monerojs",
-  "version": "0.1.9",
+  "name": "monerojs2",
+  "version": "0.2.0",
   "description": "ES6 JavaScript Monero library",
   "main": "index.js",
   "scripts": {
@@ -8,20 +8,21 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/monerojs/monerojs.git"
+    "url": "git+https://github.com/camthegeek/monerojs.git"
   },
   "keywords": [
     "monero"
   ],
-  "author": "sneurlax <sneurlax@gmail.com> (https://github.com/sneurlax)",
+  "author": "camthegeek <cam@camthegeek.net> (https://github.com/camthegeek)",
   "constributors": [
-    "sneurlax <sneurlax@gmail.com>"
+    "sneurlax <sneurlax@gmail.com>",
+    "camthegeek <cam@camthegeek.net>"
   ],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/monerojs/monerojs/issues"
+    "url": "https://github.com/camthegeek/monerojs/issues"
   },
-  "homepage": "https://github.com/monerojs/monerojs#readme",
+  "homepage": "https://github.com/camthegeek/monerojs#readme",
   "dependencies": {
     "request": "^2.85.0",
     "request-promise-native": "^1.0.5"
