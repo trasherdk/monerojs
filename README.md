@@ -1,5 +1,5 @@
 # `monerojs`
-The original repo (https://github.com/monerojs/monerojs) appears to no longer be actively maintained. 
+The original repo (https://github.com/monerojs/monerojs) appears to be no longer be actively maintained. 
 
 A Monero library written in ES6 JavaScript
 
@@ -7,7 +7,7 @@ This library has two main parts: a Monero daemon (`monerod`) JSON-RPC API wrappe
 
 ### Requirements
  - Node.js
- - A Monero (Lithium Luna 0.12) node (remote nodes support most, but not all, methods.)
+ - A Monero node, preferably at latest version release (remote nodes support most, but not all, methods.)
 
 ## Installation
 ```bash
