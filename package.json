@@ -1,6 +1,6 @@
 {
   "name": "monerojs2",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "ES6 JavaScript Monero library",
   "main": "index.js",
   "scripts": {
