@@ -1,4 +1,4 @@
-# `monerojs`
+# `monerojs2`
 The original repo (https://github.com/monerojs/monerojs) appears to be no longer be actively maintained. 
 
 A Monero library written in ES6 JavaScript
@@ -26,7 +26,7 @@ JSON-RPC interfaces and their methods are wrapped in promises.  Much more exhaus
 #### Autoconnect to Monero daemon (`monerod`)
 
 ```js
-const Monero = require('monerojs');
+const Monero = require('monerojs2');
 
 var daemonRPC = new Monero.daemonRPC({ autoconnect: true })
 .then((daemon) => {
