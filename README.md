@@ -86,19 +86,19 @@ const walletRPC = new Monero.walletRPC() // Connect with defaults
       .then(balance => {
         console.log(balance);
       })
-      .catch(err = {
+      .catch(err => {
         console.error(err);
       });
     })
-    .catch(err = {
+    .catch(err => {
       console.error(err);
     });
   })
-  .catch(err = {
+  .catch(err => {
     console.error(err);
   });
 })
-.catch(err = {
+.catch(err => {
   throw new Error(err);
 });
 ```
